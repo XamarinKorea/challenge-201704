@@ -1,4 +1,5 @@
 # 2017년 4월의 도전과제
+[도전과제란?](https://github.com/XamarinKorea/challenge-common)
 
 ## 목표
 - RESTful Web Service 에서 데이터를 읽어와서 화면에 표시하기
@@ -30,3 +31,4 @@
 - pull request 된 repository 를 대상으로 카페내에서 투표를 진행
 - 가장 많은 투표를 받은 repository 를 우승자로 선정
 - 우승자의 repository 를 master 로 merge
+
