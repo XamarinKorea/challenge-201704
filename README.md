@@ -17,7 +17,6 @@
 - RESTful API : https://randomuser.me/ 을 이용해야함
 - PCL/Shared Project 의 사용여부는 자율에 따름
 - List/Detail 화면의 구성은 자율에 따름
-- 
 
 ## 참여방법
 - 본 Repository 를 Fork 한후, 기능을 구현하여주세요
