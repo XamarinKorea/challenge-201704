@@ -1,4 +1,28 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:clg1704" x:Class="clg1704.clg1704Page">
-	<Label Text="Welcome to Xamarin Forms!" VerticalOptions="Center" HorizontalOptions="Center" />
+	<ContentPage.Padding>
+		<OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" />
+	</ContentPage.Padding>
+
+	<RelativeLayout>
+		<ListView x:Name="lv">
+			<ListView.ItemTemplate>
+		      <DataTemplate>
+		        <TextCell Text="{Binding NameFirst}" />
+		      </DataTemplate>
+		    </ListView.ItemTemplate>
+		</ListView>
+
+		<ActivityIndicator x:Name="aIndicator" Color="Gray" IsRunning="true"
+			RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                        Property=Width,
+                                        Factor=1}"
+				RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                        Property=Height,
+                                        Factor=1}"
+			IsEnabled="false">
+
+		</ActivityIndicator>
+	</RelativeLayout>
+
 </ContentPage>
