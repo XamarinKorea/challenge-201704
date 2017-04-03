@@ -49,6 +49,12 @@ namespace clg1704
 
 			const string RANDON_DATA_URL = "https://randomuser.me/api/?results=20&nat=AU,BR,CA,CH,DE,DK,ES,FI,FR,GB,IE,NL,NZ,TR,US";
 
+			//var httpClient = new HttpClient(new NativeMessageHandler());
+			//var httpClient = new HttpClient();
+			//HttpResponseMessage res = await httpClient.GetAsync("https://randomuser.me/api/?results=20");
+			//string message = await res.Content.ReadAsStringAsync();
+			//Debug.WriteLine("Message : " + message);
+
 			HttpClient client = new HttpClient();
 
 			HttpResponseMessage response = await client.GetAsync(RANDON_DATA_URL);

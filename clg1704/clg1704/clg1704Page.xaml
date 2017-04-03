@@ -34,8 +34,7 @@
 				RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
                                         Property=Height,
                                         Factor=1}"
-			IsEnabled="false"
-			IsVisible="false">
+			IsEnabled="false">
 
 		</ActivityIndicator>
 	</RelativeLayout>
