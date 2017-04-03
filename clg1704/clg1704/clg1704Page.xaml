@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:clg1704" x:Class="clg1704.clg1704Page">
-	<ContentPage.Padding>
-		<OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" />
-	</ContentPage.Padding>
-
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:clg1704" x:Class="clg1704.clg1704Page"
+	Title="Users">
 	<RelativeLayout>
-		<ListView x:Name="lv">
+		<ListView x:Name="lv" IsPullToRefreshEnabled="true"
+			ItemSelected="OnItemSelected" ItemAppearing="OnItemAppearing"
+			Refreshing="OnRefreshing"
+			RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                        Property=Width,
+                                        Factor=1}"
+				RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                        Property=Height,
+                                        Factor=1}">
 			<ListView.ItemTemplate>
 		      <DataTemplate>
-		        <TextCell Text="{Binding NameFirst}" />
+					<ViewCell>
+						<StackLayout Orientation="Horizontal" Margin="10,0,10,0" >
+	                        <Image Source="{Binding PictureThumbnail}"
+							Margin="10,0,10,0"/>
+							<StackLayout Orientation="Vertical" Spacing="0" VerticalOptions="Center">
+								<Label Text="{Binding NameFirst}" FontSize="Medium" TextColor="Gray" />
+								<Label Text="{Binding Cell}" FontSize="Micro" TextColor="{Binding CellTextColor}"/>
+							</StackLayout>
+						</StackLayout>
+                    </ViewCell>
 		      </DataTemplate>
 		    </ListView.ItemTemplate>
 		</ListView>
@@ -20,9 +34,9 @@
 				RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
                                         Property=Height,
                                         Factor=1}"
-			IsEnabled="false">
+			IsEnabled="false"
+			IsVisible="false">
 
 		</ActivityIndicator>
 	</RelativeLayout>
-
 </ContentPage>

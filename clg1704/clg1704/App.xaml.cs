@@ -8,7 +8,8 @@ namespace clg1704
 		{
 			InitializeComponent();
 
-			MainPage = new clg1704Page();
+			//MainPage = new clg1704Page();
+			MainPage = new NavigationPage(new clg1704Page());
 		}
 
 		protected override void OnStart()

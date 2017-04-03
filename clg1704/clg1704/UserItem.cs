@@ -1,4 +1,6 @@
 ﻿using System;
+using Xamarin.Forms;
+
 namespace clg1704
 {
 	//"results": [
@@ -59,6 +61,29 @@ namespace clg1704
 		public string Nat { get; set; }
 
 		public int Idx { get; set; }
+
+
+
+		public Color CellTextColor 
+		{
+			get
+			{
+				const string MALE = "male";
+
+				Color c;
+
+				if (Gender == MALE)
+				{
+					c = Color.Silver;
+				}
+				else
+				{
+					c = Color.Olive;
+				}
+
+				return c;
+			}
+		}
 
 
 		public UserItem()

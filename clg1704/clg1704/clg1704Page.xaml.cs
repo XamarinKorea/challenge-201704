@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xamarin.Forms;
@@ -21,47 +22,40 @@ namespace clg1704
 		{
 			InitializeComponent();
 
-			aIndicator.IsRunning = false;
-
-			getRandomData();
-
 			lv.ItemsSource = listUser;
 
-			lv.ItemAppearing += OnItemAppearing;
+			aIndicator.IsRunning = false;
+
+			getDataFirst();
 		}
 
 
-		private void OnItemAppearing( object sender, ItemVisibilityEventArgs  e )
+		private async Task getDataFirst()
 		{
-			//Debug.WriteLine( "OnItemAppearing" + ((UserItem)e.Item).Idx );
+			ObservableCollectionCustomized<UserItem> gotData = await getRandomData();
 
-			if ( ((UserItem)e.Item).Idx == listUser.Count - 1 )
-			{
-				Debug.WriteLine( "last" );
-
-				getRandomData();
-			}
+			listUser.AddRange( gotData );
 		}
 
 
-		private async Task getRandomData()
+		private async Task<ObservableCollectionCustomized<UserItem>> getRandomData()
 		{
-			if (isLoading) return;
+			if (isLoading) return new ObservableCollectionCustomized<UserItem>();
 
 			isLoading = true;
 			aIndicator.IsRunning = true;
 
-			Debug.WriteLine( "get data ing/" );
+			Debug.WriteLine("get data");
 
-			const string RANDON_DATA_URL = "https://randomuser.me/api/?results=30&nat=AU,BR,CA,CH,DE,DK,ES,FI,FR,GB,IE,NL,NZ,TR,US";
+			const string RANDON_DATA_URL = "https://randomuser.me/api/?results=20&nat=AU,BR,CA,CH,DE,DK,ES,FI,FR,GB,IE,NL,NZ,TR,US";
 
 			HttpClient client = new HttpClient();
 
-			HttpResponseMessage response = client.GetAsync(RANDON_DATA_URL).Result;  // Blocking call!
+			HttpResponseMessage response = await client.GetAsync(RANDON_DATA_URL);
 
 			if (!response.IsSuccessStatusCode)
 			{
-				return;
+				return new ObservableCollectionCustomized<UserItem>();
 			}
 
 			string result = response.Content.ReadAsStringAsync().Result;
@@ -69,58 +63,26 @@ namespace clg1704
 			JObject json = JObject.Parse(result);
 			JArray jarray = (JArray)json["results"];
 
-			//Debug.WriteLine( result );
+			ObservableCollectionCustomized<UserItem> gotData = makeUserDataPretty( jarray );
 
-			//"results": [
-			//   {
-			//     "gender": "male",
-			//     "name": {
-			//       "title": "mr",
-			//       "first": "romain",
-			//       "last": "hoogmoed"
+			isLoading = false;
+			aIndicator.IsRunning = false;
 
-			//  },
-			//     "location": {
-			//       "street": "1861 jan pieterszoon coenstraat",
-			//       "city": "maasdriel",
-			//       "state": "zeeland",
-			//       "postcode": 69217
-			//     },
-			//     "email": "romain.hoogmoed@example.com",
-			//     "login": {
-			//       "username": "lazyduck408",
-			//       "password": "jokers",
-			//       "salt": "UGtRFz4N",
-			//       "md5": "6d83a8c084731ee73eb5f9398b923183",
-			//       "sha1": "cb21097d8c430f2716538e365447910d90476f6e",
-			//       "sha256": "5a9b09c86195b8d8b01ee219d7d9794e2abb6641a2351850c49c309f1fc204a0"
-			//     },
-			//     "dob": "1983-07-14 07:29:45",
-			//     "registered": "2010-09-24 02:10:42",
-			//     "phone": "(656)-976-4980",
-			//     "cell": "(065)-247-9303",
-			//     "id": {
-			//       "name": "BSN",
-			//       "value": "04242023"
-			//     },
-			//     "picture": {
-			//       "large": "https://randomuser.me/api/portraits/men/83.jpg",
-			//       "medium": "https://randomuser.me/api/portraits/med/men/83.jpg",
-			//       "thumbnail": "https://randomuser.me/api/portraits/thumb/men/83.jpg"
-			//     },
-			//     "nat": "NL"
-			//   }
-			// ],
+			return gotData;
+		}
+
+
+		private ObservableCollectionCustomized<UserItem> makeUserDataPretty( JArray jarray )
+		{
+			ObservableCollectionCustomized<UserItem> gotData = new ObservableCollectionCustomized<UserItem>();
 
 			UserItem userItem;
 
 			foreach (JObject item in jarray)
 			{
-				//string strItem = item.ToString(Newtonsoft.Json.Formatting.None);
-
 				userItem = new UserItem();
 
-				userItem.Gender = (string)item[ "gender" ];
+				userItem.Gender = (string)item["gender"];
 
 				userItem.NameFirst = (string)item["name"]["first"];
 
@@ -134,16 +96,53 @@ namespace clg1704
 
 				userItem.Nat = (string)item["nat"];
 
-				userItem.Idx = listUser.Count;
-
-				//Debug.WriteLine( userItem.Idx + " / " + userItem.NameFirst + " / " + userItem.Nat );
-
-				listUser.Add( userItem );
+				gotData.Add(userItem);
 			}
 
-			isLoading = false;
-			aIndicator.IsRunning = false;
-
+			return gotData;
 		}
+
+
+		private async void OnItemAppearing(object sender, ItemVisibilityEventArgs e)
+		{
+			if( (UserItem)e.Item == listUser[ listUser.Count - 1 ] )
+			{
+				Debug.WriteLine("last item");
+
+				ObservableCollectionCustomized<UserItem> gotData = await getRandomData();
+
+				listUser.AddRange( gotData );
+			}
+		}
+
+
+		private async void OnRefreshing(object sender, EventArgs e)
+		{
+			lv.IsRefreshing = false;
+
+			ObservableCollectionCustomized<UserItem> gotData = await getRandomData();
+
+			listUser.Clear();
+
+			listUser.AddRange( gotData );
+		}
+
+
+		private async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+		{
+			if (e.SelectedItem == null)
+			{
+				return; //ItemSelected is called on deselection, which results in SelectedItem being set to null
+			}
+
+			UserItem model = lv.SelectedItem as UserItem;
+
+			lv.SelectedItem = null;
+
+			DetailPage detail = new DetailPage( model );
+
+			await Navigation.PushAsync(detail);
+		}
+
 	}
 }
