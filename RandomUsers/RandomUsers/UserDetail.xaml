@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="RandomUsers.UserDetail" 
+             xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
+             Title="{Binding DisplayName}"
+             >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid BackgroundColor="{Binding Gender,Converter={StaticResource GenderToColorConverter}}" HeightRequest="75" HorizontalOptions="Fill" VerticalOptions="Start" />
+            <controls:CircleImage Aspect="AspectFill" 
+                                  BorderColor="{Binding Gender,Converter={StaticResource GenderToColorConverter}}"
+                                  BorderThickness="5"
+                                  VerticalOptions="End"
+                                  HeightRequest="150" HorizontalOptions="Center" Source="{Binding Picture.LargeSource}" 
+                                  WidthRequest="150" />
+        </Grid>
+        <Grid Grid.Row="1">
+            <StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label WidthRequest="100" HorizontalTextAlignment="End" Text="Gender : " />
+                    <Label Text="{Binding Gender}" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label WidthRequest="100" HorizontalTextAlignment="End" Text="Nationality : " />
+                    <Label Text="{Binding Nat}" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label WidthRequest="100" HorizontalTextAlignment="End" Text="Phone : " />
+                    <Label Text="{Binding Phone}" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label WidthRequest="100" HorizontalTextAlignment="End" Text="Cell : " />
+                    <Label Text="{Binding Cell}" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label WidthRequest="100" HorizontalTextAlignment="End" Text="Email : " />
+                    <Label Text="{Binding Email}" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label WidthRequest="100" HorizontalTextAlignment="End" Text="State : " />
+                    <Label Text="{Binding Location.State}" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label WidthRequest="100" HorizontalTextAlignment="End" Text="City : " />
+                    <Label Text="{Binding Location.City}" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label WidthRequest="100" HorizontalTextAlignment="End" Text="Street : " />
+                    <Label Text="{Binding Location.Street}" />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label WidthRequest="100" HorizontalTextAlignment="End" Text="Post Code : " />
+                    <Label Text="{Binding Location.PostCode}" />
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>
