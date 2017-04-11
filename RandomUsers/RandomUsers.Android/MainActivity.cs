@@ -26,22 +26,20 @@ namespace RandomUsers.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(bundle);
-#if DEBUG
-            StreamReader strm = new StreamReader(Assets.Open("data.json"));
-            var json = strm.ReadToEnd();
-            
             global::Xamarin.Forms.Forms.Init(this, bundle);
             ImageCircle.Forms.Plugin.Droid.ImageCircleRenderer.Init();
-            LoadApplication(new App(json));
-#else
-            global::Xamarin.Forms.Forms.Init(this, bundle);
-            ImageCircle.Forms.Plugin.Droid.ImageCircleRenderer.Init();
-
             _sensorManager = (SensorManager)GetSystemService(Context.SensorService);
             _sensor = _sensorManager.GetDefaultSensor(SensorType.Accelerometer);
 
             _shakeDetector = new ShakeDetector();
-
+#if DEBUG
+            StreamReader strm = new StreamReader(Assets.Open("data.json"));
+            var json = strm.ReadToEnd();
+            
+            
+            
+            LoadApplication(new App(json));
+#else
             var app = new App();
 
             _shakeDetector.Shaked += (sender, shakeCount) =>

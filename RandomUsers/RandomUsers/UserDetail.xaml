@@ -3,9 +3,10 @@
              xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
-             Title="{Binding DisplayName}"
+             BindingContext="{Binding Detail,Source={StaticResource Locator}}"
+             Title="{Binding User.DisplayName}"
              >
-    <Grid>
+    <Grid BindingContext="{Binding User}">
         <Grid.RowDefinitions>
             <RowDefinition Height="150" />
             <RowDefinition Height="*" />

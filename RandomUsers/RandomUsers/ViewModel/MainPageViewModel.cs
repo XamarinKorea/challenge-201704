@@ -1,17 +1,14 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using RandomUsers.Models;
 using RandomUsers.Service;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace RandomUsers.ViewModel
 {
-    public class MainPageViewModel : ViewModelBase
+    public class MainPageViewModel : PageViewModelBase
     {
         private DataService _dataservice;
         private bool _isRefresh;
@@ -73,7 +70,8 @@ namespace RandomUsers.ViewModel
 
         private async void Tapped(ItemTappedEventArgs args)
         {
-            await (App.Current.MainPage as NavigationPage).Navigation.PushAsync(new UserDetail() { BindingContext = args.Item });
+            await Navigation.PushAsync(new UserDetail());
+            Messenger.Default.Send<User>((User)args.Item);
         }
     }
 }
