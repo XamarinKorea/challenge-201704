@@ -16,6 +16,7 @@
             
             <controls:CircleImage Aspect="AspectFill" 
                                   BorderColor="{Binding Gender,Converter={StaticResource GenderToColorConverter}}"
+                                  FillColor="{Binding Gender,Converter={StaticResource GenderToColorConverter}}"
                                   BorderThickness="5"
                                   VerticalOptions="End"
                                   HeightRequest="150" HorizontalOptions="Center" Source="{Binding Picture.LargeSource}" 

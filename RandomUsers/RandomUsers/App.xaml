@@ -18,7 +18,7 @@
                 <ViewCell>
                     <StackLayout Orientation="Horizontal">
                         <circleImg:CircleImage Source="{Binding Picture.ThumbnailSource}" WidthRequest="40" HeightRequest="40" Aspect="AspectFill"
-                                               BorderThickness="2" BorderColor="{StaticResource MaleColor}" />
+                                               BorderThickness="2" BorderColor="{StaticResource MaleColor}" FillColor="{StaticResource MaleColor}" />
                         <Label Text="{Binding DisplayName}" VerticalOptions="Center" />
                     </StackLayout>
                 </ViewCell>
@@ -27,7 +27,7 @@
                 <ViewCell>
                     <StackLayout Orientation="Horizontal">
                         <circleImg:CircleImage Source="{Binding Picture.ThumbnailSource}" WidthRequest="40" HeightRequest="40" Aspect="AspectFill" 
-                                               BorderThickness="2" BorderColor="{StaticResource FemaleColor}" />
+                                               BorderThickness="2" BorderColor="{StaticResource FemaleColor}" FillColor="{StaticResource FemaleColor}"/>
                         <Label Text="{Binding DisplayName}" VerticalOptions="Center" />
                     </StackLayout>
                 </ViewCell>
