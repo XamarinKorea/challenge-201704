@@ -23,6 +23,9 @@ namespace RandomUsers
         {
             // Handle when your app starts
             InitializeComponent();
+
+            
+
             (MainPage as NavigationPage).Navigation.PushAsync(new MainPage());
         }
 
@@ -34,6 +37,11 @@ namespace RandomUsers
         protected override void OnResume()
         {
             // Handle when your app resumes
+        }
+
+        public void Shake(int shakeCount)
+        {
+            (MainPage as NavigationPage).Navigation.PopAsync();
         }
     }
 }

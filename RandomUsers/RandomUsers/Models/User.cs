@@ -46,7 +46,7 @@ namespace RandomUsers.Models
 #else
                 return new UriImageSource
                 {
-                    CachingEnabled = false,
+                    CachingEnabled = true,
                     Uri = new Uri(Medium),
                 };
 #endif
@@ -63,7 +63,7 @@ namespace RandomUsers.Models
 #else
                 return new UriImageSource
                 {
-                    CachingEnabled = false,
+                    CachingEnabled = true,
                     Uri = new Uri(Large),
                 };
 #endif

@@ -12,6 +12,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid BackgroundColor="{Binding Gender,Converter={StaticResource GenderToColorConverter}}" HeightRequest="75" HorizontalOptions="Fill" VerticalOptions="Start" />
+            
             <controls:CircleImage Aspect="AspectFill" 
                                   BorderColor="{Binding Gender,Converter={StaticResource GenderToColorConverter}}"
                                   BorderThickness="5"
