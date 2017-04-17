@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:selector="clr-namespace:Challenge201704.XamarinKorea.Selectors"
+             xmlns:cricleimage="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             xmlns:behabor="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Challenge201704.XamarinKorea.Views.MainPage"
+             Title="Challenge 201704 XamarinKorea">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="male">
+                <ViewCell>
+                    <Grid Padding="8,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Source="{Binding Picture.Medium}" VerticalOptions="Center" Aspect="AspectFill">
+                            <Image.WidthRequest>
+                                <OnPlatform x:TypeArguments="x:Double" iOS="55" Android="55" WinPhone="75"/>
+                            </Image.WidthRequest>
+                            <Image.HeightRequest>
+                                <OnPlatform x:TypeArguments="x:Double" iOS="55" Android="55" WinPhone="75"/>
+                            </Image.HeightRequest>
+                        </Image>
+                        <StackLayout Grid.Column="1" 
+                                               Padding="5" 
+                                               Spacing="3"
+                                               VerticalOptions="Center">
+                            <Label Text="{Binding Name, Converter={StaticResource nameConverter}}" FontSize="Medium" FontAttributes = "Bold" TextColor = "{DynamicResource textColor}" LineBreakMode="TailTruncation"/>
+                            <Label Text="{Binding Email}" FontSize="Small" LineBreakMode="TailTruncation" TextColor = "{DynamicResource textColor}"/>
+                        </StackLayout>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="female">
+                <ViewCell>
+                    <Grid Padding="8,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <cricleimage:CircleImage Source="{Binding Picture.Medium}" VerticalOptions="Center" >
+                            <cricleimage:CircleImage.WidthRequest>
+                                <OnPlatform x:TypeArguments="x:Double" iOS="55" Android="55" WinPhone="75"/>
+                            </cricleimage:CircleImage.WidthRequest>
+                            <cricleimage:CircleImage.HeightRequest>
+                                <OnPlatform x:TypeArguments="x:Double" iOS="55" Android="55" WinPhone="75"/>
+                            </cricleimage:CircleImage.HeightRequest>
+                        </cricleimage:CircleImage>
+                        <StackLayout Grid.Column="1" 
+                                     Padding="5" 
+                                     Spacing="3"
+                                     VerticalOptions="Center">
+                            <Label Text="{Binding Name, Converter={StaticResource nameConverter}}" FontSize="Medium" FontAttributes = "Bold" TextColor = "{DynamicResource textColor}" LineBreakMode="TailTruncation"/>
+                            <Label Text="{Binding Email}" FontSize="Small" LineBreakMode="TailTruncation" TextColor = "{DynamicResource textColor}"/>
+                        </StackLayout>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            <selector:GenderDataTemplateSelector x:Key="genderDataTemplateSelector"
+                    Male="{StaticResource male}"
+                    Female="{StaticResource female}" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout>
+        <ListView ItemsSource="{Binding Users}"
+                  IsPullToRefreshEnabled="True"
+                  RefreshCommand="{Binding RefleshCommand}"
+                  IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                  HasUnevenRows="True"
+                  CachingStrategy="RecycleElement"
+                  BackgroundColor="{DynamicResource backgroundColor}"
+                  ItemTemplate="{StaticResource genderDataTemplateSelector}">
+            <ListView.Behaviors>
+                <behabor:EventToCommandBehavior EventName="ItemAppearing" 
+                                                Command="{Binding DataLoadCommand}" />
+                <behabor:EventToCommandBehavior EventName="ItemTapped" 
+                                                Command="{Binding UserSelectedCommand}" 
+                                                EventArgsParameterPath="Item" />
+            </ListView.Behaviors>
+        </ListView>
+    </StackLayout>
+</ContentPage>
