@@ -5,7 +5,7 @@
 - Visual Studio 2017 Community
 - Prism.Forms , Prism.Unity.Forms (https://github.com/PrismLibrary/Prism)
 - Xamarin.Forms.Maps (https://developer.xamarin.com/guides/xamarin-forms/user-interface/map/)
-  -> Andorid, UWP 에서 Maps 사용시 별도의 별도의 API 키값이 필요 
+  -> Andorid, UWP 에서 Maps 사용시 별도의 API 키값이 필요 
 
 ## 목표
 - RESTful Web Service 에서 데이터를 읽어와서 화면에 표시하기
