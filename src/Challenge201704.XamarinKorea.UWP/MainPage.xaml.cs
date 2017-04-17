@@ -28,7 +28,7 @@ namespace Challenge201704.XamarinKorea.UWP
             ImageCircleRenderer.Init();
 
             //Xamarin Forms Maps 초기화 하기
-            Xamarin.FormsMaps.Init("cVboouuKHjgWOVjbXxoE~wveD4VbrZb9-d54E7FGWQg~Avk4hpvqJF3Ke6NvWZ9wVSai3Pv9pXb0a6pDk6orKqb_mBXYjHclp4kGX6EZwcqL");
+            Xamarin.FormsMaps.Init("INSERT_AUTHENTICATION_TOKEN_HERE");
             LoadApplication(new Challenge201704.XamarinKorea.App(new UwpInitializer()));
         }
     }
