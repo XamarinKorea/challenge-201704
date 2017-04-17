@@ -19,6 +19,11 @@
             <converter:IsFemaleConverter x:Key="isFemaleConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
+    <ContentPage.Behaviors>
+        <behabor:EventToCommandBehavior EventName="Appearing" 
+                                        Command="{Binding MapInitCommand}"
+                                        CommandParameter="{Reference AddressMap}" />
+    </ContentPage.Behaviors>
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Padding="10">
