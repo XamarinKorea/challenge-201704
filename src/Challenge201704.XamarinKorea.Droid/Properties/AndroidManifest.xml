@@ -9,6 +9,6 @@
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<application android:label="Challenge201704.XamarinKorea.Droid" android:theme="@style/MyTheme">
-      <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AbCdEfGhIjKlMnOpQrStUvWValueGoesHere" />
-  </application>
+		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyAGpQYSLgomYA2ey-uxrA-wSkpm6W6BkHk" />
+	</application>
 </manifest>

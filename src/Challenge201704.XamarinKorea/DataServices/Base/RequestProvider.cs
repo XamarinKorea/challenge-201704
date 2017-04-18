@@ -4,8 +4,12 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using ModernHttpClient;
+using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Challenge201704.XamarinKorea.DataServices.Base
@@ -35,8 +39,23 @@ namespace Challenge201704.XamarinKorea.DataServices.Base
         /// <returns>Json 결과를 TResult로 리턴</returns>
         public async Task<TResult> GetAsync<TResult>(string uri)
         {
-            HttpClient httpClient = CreateHttpClient();
-            HttpResponseMessage response = await httpClient.GetAsync(uri);
+            //HttpClient httpClient = CreateHttpClient();
+            HttpResponseMessage response = new HttpResponseMessage();
+            try
+            {
+                using (var httpClient = CreateHttpClient())
+                {
+                    httpClient.Timeout = TimeSpan.FromSeconds(20);
+                    var cancelTokenSource = new CancellationTokenSource();
+                    var cancelToken = cancelTokenSource.Token;
+
+                    response = await httpClient.GetAsync(uri, cancelToken).ConfigureAwait(false);
+                }
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine($"Error in: {ex}");
+            }
 
             await HandleResponse(response);
 
@@ -52,7 +71,14 @@ namespace Challenge201704.XamarinKorea.DataServices.Base
         /// <returns>HttpClient Instance</returns>
         private HttpClient CreateHttpClient()
         {
-            var httpClient = new HttpClient();
+            /*
+                Android 에서 https 호출시 
+                System.IO.IOException: The authentication or decryption has failed. 
+                ---> Mono.Security.Protocol.Tls.TlsException: The authentication or decryption has failed. 에러 발생
+                관련 이슈 : http://stackoverflow.com/questions/4926676/mono-https-webrequest-fails-with-the-authentication-or-decryption-has-failed
+                ModernHttpClient 패키지 추가 > NativeMessageHandler 추가
+            */
+            var httpClient = new HttpClient(new NativeMessageHandler());
 
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
