@@ -77,8 +77,9 @@
                       BackgroundColor="{DynamicResource backgroundColor}"
                       ItemTemplate="{StaticResource genderDataTemplateSelector}">
                 <ListView.Behaviors>
-                    <!--prismbehavior:EventToCommandBehavior EventName="ItemAppearing" 
-                                                    Command="{Binding DataLoadCommand}" /-->
+                    <prismbehavior:EventToCommandBehavior EventName="ItemAppearing" 
+                                                    Command="{Binding DataLoadCommand}" 
+                                                    EventArgsParameterPath="Item"/>
                     <prismbehavior:EventToCommandBehavior EventName="ItemTapped" 
                                                     Command="{Binding UserSelectedCommand}" 
                                                     EventArgsParameterPath="Item" />

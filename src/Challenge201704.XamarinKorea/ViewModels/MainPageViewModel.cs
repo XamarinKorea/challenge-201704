@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace Challenge201704.XamarinKorea.ViewModels
 {
@@ -30,12 +31,12 @@ namespace Challenge201704.XamarinKorea.ViewModels
         private IUserService userService;
         private IPageDialogService dialogService;
         private int page = 1;
-        private const int resultCnt = 10;
+        private const int resultCnt = 20;
         private bool isBusy;
         private bool isNotBusy = true;
         private bool isRefreshing;
         private DelegateCommand refleshCommand;
-        private DelegateCommand dataLoadCommand;
+        private DelegateCommand<User> dataLoadCommand;
         private DelegateCommand<User> userSelectedCommand;
         #endregion
 
@@ -46,7 +47,7 @@ namespace Challenge201704.XamarinKorea.ViewModels
         /// <value><c>true</c> if this instance is busy; otherwise, <c>false</c>.</value>
         public bool IsBusy
         {
-            get { return isBusy ; }
+            get { return isBusy; }
             set {
                 SetProperty(ref isBusy, value);
                 IsNotBusy = !isBusy;
@@ -63,7 +64,7 @@ namespace Challenge201704.XamarinKorea.ViewModels
             private set { SetProperty(ref isNotBusy, value); }
         }
 
-        
+
         public bool IsRefreshing
         {
             get { return isRefreshing; }
@@ -81,7 +82,7 @@ namespace Challenge201704.XamarinKorea.ViewModels
             this.navigationService = navigationService;
             this.dialogService = dialogService;
             this.userService = userService;
-            Task.Run(async () =>  await LoadData()).Wait();
+            Task.Run(async () => await LoadData()).Wait();
         }
 
         #region Command Area
@@ -93,8 +94,8 @@ namespace Challenge201704.XamarinKorea.ViewModels
         /// 참조 : Prism (https://github.com/PrismLibrary/Prism) DelegateCommand
         /// Pull to refresh 이벤트 처리용 
         /// </remarks>
-        public DelegateCommand RefleshCommand => 
-                                refleshCommand ?? (refleshCommand = 
+        public DelegateCommand RefleshCommand =>
+                                refleshCommand ?? (refleshCommand =
                                                     new DelegateCommand
                                                     (
                                                         async () =>
@@ -112,15 +113,20 @@ namespace Challenge201704.XamarinKorea.ViewModels
         /// <remarks>
         /// ListView ItemAppearing 이벤트 처리용
         /// </remarks>
-        public DelegateCommand DataLoadCommand =>
-                                 dataLoadCommand ?? (dataLoadCommand =  
-                                                    new DelegateCommand
+        public DelegateCommand<User> DataLoadCommand =>
+                                 dataLoadCommand ?? (dataLoadCommand =
+                                                    new DelegateCommand<User>
                                                     (
-                                                        async () =>
+                                                        async (User user) => 
                                                         {
-                                                            await LoadData();
+                                                            if (IsBusy || Users.Count == 0)
+                                                                return;
+
+                                                            if (user == Users[Users.Count - 1])
+                                                            {
+                                                                await LoadData();
+                                                            }
                                                         }
-                                    
                                                     ).ObservesCanExecute(() => IsNotBusy));
 
         
