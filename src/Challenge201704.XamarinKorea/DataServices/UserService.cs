@@ -32,7 +32,7 @@ namespace Challenge201704.XamarinKorea.DataServices
         {
             var builder = new UriBuilder(AppSettings.UsersApiServer);
             builder.Path = "api/";
-            string noinfo = (isIncludeInfo ?? false) ? "&noinfo" : string.Empty;
+            string noinfo = isIncludeInfo.Value.Equals(false) ? "&noinfo" : string.Empty;
             string param =  $@"?page={page}&results={results}&seed={seed}" + noinfo;
 
             var uri = builder.ToString() + param;

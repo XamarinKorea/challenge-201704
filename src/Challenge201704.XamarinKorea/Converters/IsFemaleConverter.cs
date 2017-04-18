@@ -12,7 +12,7 @@ namespace Challenge201704.XamarinKorea.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is Gender gender)
+            if(value is Gender gender)
             {
                 return gender.Equals(Gender.Female);
             }

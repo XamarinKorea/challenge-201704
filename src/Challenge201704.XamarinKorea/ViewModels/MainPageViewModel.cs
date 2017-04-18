@@ -30,8 +30,10 @@ namespace Challenge201704.XamarinKorea.ViewModels
         private IUserService userService;
         private IPageDialogService dialogService;
         private int page = 1;
+        private const int resultCnt = 10;
         private bool isBusy;
         private bool isNotBusy = true;
+        private bool isRefreshing;
         private DelegateCommand refleshCommand;
         private DelegateCommand dataLoadCommand;
         private DelegateCommand<User> userSelectedCommand;
@@ -44,7 +46,7 @@ namespace Challenge201704.XamarinKorea.ViewModels
         /// <value><c>true</c> if this instance is busy; otherwise, <c>false</c>.</value>
         public bool IsBusy
         {
-            get { return isBusy = false; }
+            get { return isBusy ; }
             set {
                 SetProperty(ref isBusy, value);
                 IsNotBusy = !isBusy;
@@ -61,6 +63,12 @@ namespace Challenge201704.XamarinKorea.ViewModels
             private set { SetProperty(ref isNotBusy, value); }
         }
 
+        
+        public bool IsRefreshing
+        {
+            get { return isRefreshing; }
+            set { SetProperty(ref isRefreshing, value); }
+        }
         /// <summary>
         /// Get or set the "Users" property
         /// </summary>
@@ -73,7 +81,7 @@ namespace Challenge201704.XamarinKorea.ViewModels
             this.navigationService = navigationService;
             this.dialogService = dialogService;
             this.userService = userService;
-            Task.Run(() => LoadData()).Wait();
+            Task.Run(async () =>  await LoadData()).Wait();
         }
 
         #region Command Area
@@ -91,6 +99,9 @@ namespace Challenge201704.XamarinKorea.ViewModels
                                                     (
                                                         async () =>
                                                         {
+                                                            if (isRefreshing || isBusy)
+                                                                return;
+
                                                             page = 1;
                                                             await LoadData();
                                                         }
@@ -136,17 +147,21 @@ namespace Challenge201704.XamarinKorea.ViewModels
         #region Private Method
         private async Task LoadData()
         {
+            if (page == 1)
+                isRefreshing = true;
+
             IsBusy = true;
+
             try
             {
-                var results = await userService.GetUsersAsync(page);
-                if(results?.Count > 0)
+                var users = await userService.GetUsersAsync(page,  resultCnt, "xamarinkorea", false);
+                if (users?.Count > 0)
                 {
                     if (page == 1)
                         Users.Clear();
 
-                    Users.AddRange(results);
-                    page++; 
+                    Users.AddRange(users);
+                    page++;
                 }
             }
             catch (Exception ex) when (ex is WebException || ex is HttpRequestException)
@@ -160,16 +175,9 @@ namespace Challenge201704.XamarinKorea.ViewModels
             finally
             {
                 IsBusy = false;
+                isRefreshing = false;
             }
         }
-
-        //private async void UserSelected(User user)
-        //{
-        //    var p = new NavigationParameters();
-        //    p.Add("user", user);
-
-        //    await navigationService.NavigateAsync("UserDetailPage", p);
-        //}
         #endregion
     }
 }

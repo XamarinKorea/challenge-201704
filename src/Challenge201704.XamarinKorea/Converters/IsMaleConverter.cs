@@ -8,7 +8,7 @@ namespace Challenge201704.XamarinKorea.Converters
     /// <summary>
     /// 남성 여부 체크 Conver class
     /// </summary>
-    public class IsMaleBoolConverter : IValueConverter
+    public class IsMaleConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

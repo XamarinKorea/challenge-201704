@@ -4,7 +4,7 @@
              xmlns:selector="clr-namespace:Challenge201704.XamarinKorea.Selectors"
              xmlns:cricleimage="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
-             xmlns:behabor="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             xmlns:prismbehavior="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Challenge201704.XamarinKorea.Views.MainPage"
              Title="Challenge 201704 XamarinKorea">
@@ -67,18 +67,19 @@
     </ContentPage.Resources>
     <Grid>
         <StackLayout>
-            <ListView ItemsSource="{Binding Users}"
+            <ListView x:Name="userListView"
+                      ItemsSource="{Binding Users}"
                       IsPullToRefreshEnabled="True"
                       RefreshCommand="{Binding RefleshCommand}"
-                      IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                      IsRefreshing="{Binding IsRefreshing, Mode=OneWay}"
                       HasUnevenRows="True"
                       CachingStrategy="RecycleElement"
                       BackgroundColor="{DynamicResource backgroundColor}"
                       ItemTemplate="{StaticResource genderDataTemplateSelector}">
                 <ListView.Behaviors>
-                    <behabor:EventToCommandBehavior EventName="ItemAppearing" 
-                                                    Command="{Binding DataLoadCommand}" />
-                    <behabor:EventToCommandBehavior EventName="ItemTapped" 
+                    <!--prismbehavior:EventToCommandBehavior EventName="ItemAppearing" 
+                                                    Command="{Binding DataLoadCommand}" /-->
+                    <prismbehavior:EventToCommandBehavior EventName="ItemTapped" 
                                                     Command="{Binding UserSelectedCommand}" 
                                                     EventArgsParameterPath="Item" />
                 </ListView.Behaviors>

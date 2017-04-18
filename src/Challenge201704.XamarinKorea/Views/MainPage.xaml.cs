@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Challenge201704.XamarinKorea.ViewModels;
+using Xamarin.Forms;
 
 namespace Challenge201704.XamarinKorea.Views
 {
