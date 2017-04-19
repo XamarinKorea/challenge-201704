@@ -71,7 +71,7 @@
                       ItemsSource="{Binding Users}"
                       IsPullToRefreshEnabled="True"
                       RefreshCommand="{Binding RefleshCommand}"
-                      IsRefreshing="{Binding IsRefreshing, Mode=OneWay}"
+                      IsRefreshing="{Binding IsRefreshing,Mode=OneWay}"
                       HasUnevenRows="True"
                       CachingStrategy="RecycleElement"
                       BackgroundColor="{DynamicResource backgroundColor}"
@@ -89,6 +89,7 @@
         <ActivityIndicator 
                 IsRunning="{Binding IsBusy}"   
                 IsVisible="{Binding IsBusy}"
+                Color="Gray"
                 VerticalOptions="Center"
                 HorizontalOptions="Center">
             <ActivityIndicator.WidthRequest>

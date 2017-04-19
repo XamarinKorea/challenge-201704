@@ -31,7 +31,7 @@ namespace Challenge201704.XamarinKorea.ViewModels
         private IUserService userService;
         private IPageDialogService dialogService;
         private int page = 1;
-        private const int resultCnt = 20;
+        private const int resultCnt = 20;   //회원 리스트 페이지당 결과갯수
         private bool isBusy;
         private bool isNotBusy = true;
         private bool isRefreshing;
@@ -64,26 +64,40 @@ namespace Challenge201704.XamarinKorea.ViewModels
             private set { SetProperty(ref isNotBusy, value); }
         }
 
-
-        public bool IsRefreshing
-        {
-            get { return isRefreshing; }
-            set { SetProperty(ref isRefreshing, value); }
-        }
         /// <summary>
         /// Get or set the "Users" property
         /// </summary>
         /// <value>User 리스트</value>
         public ObservableRangeCollection<User> Users { get; set; } = new ObservableRangeCollection<User>();
+
+        /// <summary>
+        /// Get or set the "IsRefreshing" property
+        /// </summary>
+        /// <value><c>trun</c> if this data is reloaded; otherwise, <c>false</c>.</value>
+        public bool IsRefreshing
+        {
+            get { return isRefreshing; }
+            set { SetProperty(ref isRefreshing, value); }
+        }
         #endregion
 
+        #region Constructor Area
         public MainPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IUserService userService)
         {
             this.navigationService = navigationService;
             this.dialogService = dialogService;
             this.userService = userService;
-            Task.Run(async () => await LoadData()).Wait();
+            Task.Run(async () =>
+                        {
+                            IsRefreshing = true;
+
+                            await LoadData();
+
+                            isRefreshing = false;
+                        }
+                    ).Wait();
         }
+        #endregion
 
         #region Command Area
 
@@ -103,8 +117,12 @@ namespace Challenge201704.XamarinKorea.ViewModels
                                                             if (isRefreshing || isBusy)
                                                                 return;
 
+                                                            IsRefreshing = true;
+
                                                             page = 1;
                                                             await LoadData();
+
+                                                            IsRefreshing = false;
                                                         }
                                                     ).ObservesCanExecute(() => IsNotBusy));
         /// <summary>
@@ -122,10 +140,14 @@ namespace Challenge201704.XamarinKorea.ViewModels
                                                             if (IsBusy || Users.Count == 0)
                                                                 return;
 
+                                                            IsBusy = true;
+
                                                             if (user == Users[Users.Count - 1])
                                                             {
                                                                 await LoadData();
                                                             }
+
+                                                            IsBusy = false;
                                                         }
                                                     ).ObservesCanExecute(() => IsNotBusy));
 
@@ -153,11 +175,6 @@ namespace Challenge201704.XamarinKorea.ViewModels
         #region Private Method
         private async Task LoadData()
         {
-            if (page == 1)
-                isRefreshing = true;
-
-            IsBusy = true;
-
             try
             {
                 var users = await userService.GetUsersAsync(page,  resultCnt, "xamarinkorea", false);
@@ -180,8 +197,8 @@ namespace Challenge201704.XamarinKorea.ViewModels
             }
             finally
             {
+                IsRefreshing = false;
                 IsBusy = false;
-                isRefreshing = false;
             }
         }
         #endregion

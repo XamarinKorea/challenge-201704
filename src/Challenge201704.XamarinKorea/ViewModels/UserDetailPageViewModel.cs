@@ -104,7 +104,7 @@ namespace Challenge201704.XamarinKorea.ViewModels
             try
             {
                 var geocoder = new Geocoder();
-                var address = $"{User.Address.Street}, {User.Address.City}, {User.Address.State}";
+                var address = $"{User.Address.Street}, {User.Address.City}, {User.Address.State} {User.Nationality}";
                 var positions = await geocoder.GetPositionsForAddressAsync(address);
                 
                 if(positions?.Count() > 0)

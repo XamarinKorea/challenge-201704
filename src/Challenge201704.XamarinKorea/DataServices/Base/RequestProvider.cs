@@ -72,11 +72,15 @@ namespace Challenge201704.XamarinKorea.DataServices.Base
         private HttpClient CreateHttpClient()
         {
             /*
-                Android 에서 https 호출시 
+                Mono 에서 SSL/TLS 관련 호출시 
                 System.IO.IOException: The authentication or decryption has failed. 
-                ---> Mono.Security.Protocol.Tls.TlsException: The authentication or decryption has failed. 에러 발생
+                ---> Mono.Security.Protocol.Tls.TlsException: The authentication or decryption has failed. 에러 발생할 수 있음
                 관련 이슈 : http://stackoverflow.com/questions/4926676/mono-https-webrequest-fails-with-the-authentication-or-decryption-has-failed
+                
                 ModernHttpClient 패키지 추가 > NativeMessageHandler 추가
+                
+                참조 : IOS 프로젝트 > 속성 > IOS 빌드 > 고급 Tab > SSL/TLS implementation , HttpClient implementation 선택
+                       Android 프로젝트 > 속성 > Andorid 옵션 > 고급 Tab > SSL/TLS implementation , HttpClient implementation 선택
             */
             var httpClient = new HttpClient(new NativeMessageHandler());
 
