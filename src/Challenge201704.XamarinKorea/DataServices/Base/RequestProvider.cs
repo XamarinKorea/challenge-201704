@@ -81,6 +81,7 @@ namespace Challenge201704.XamarinKorea.DataServices.Base
                 
                 참조 : IOS 프로젝트 > 속성 > IOS 빌드 > 고급 Tab > SSL/TLS implementation , HttpClient implementation 선택
                        Android 프로젝트 > 속성 > Andorid 옵션 > 고급 Tab > SSL/TLS implementation , HttpClient implementation 선택
+                       https://developer.xamarin.com/guides/cross-platform/transport-layer-security/
             */
             var httpClient = new HttpClient(new NativeMessageHandler());
 
