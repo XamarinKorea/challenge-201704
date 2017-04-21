@@ -28,8 +28,8 @@
   
   ios
   ![alt tag](https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/ios_list.jpg)
-  ![alt tag](https://github.com/rtrue/challenge-201704/tree/master/screen/ios_detail.jpg)
+  ![alt tag](https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/ios_detail.jpg)
   
   android
-  ![alt tag](https://github.com/rtrue/challenge-201704/tree/master/screen/android_list.jpg)
-  ![alt tag](https://github.com/rtrue/challenge-201704/tree/master/screen/android_detail.jpg)
+  ![alt tag](https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/android_list.jpg)
+  ![alt tag](https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/android_detail.jpg)
