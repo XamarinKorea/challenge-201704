@@ -27,9 +27,12 @@
 #  결과화면
   
   ios
-  ![alt tag](https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/ios_list.jpg)
-  ![alt tag](https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/ios_detail.jpg)
-  
-  android
-  ![alt tag](https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/android_list.jpg)
-  ![alt tag](https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/android_detail.jpg)
+  <p align="center">
+  <img src="https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/ios_list.jpg" width="350"/>
+  <img src="https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/ios_detail.jpg" width="350"/>
+	</p>
+	android
+	<p align="center">
+  <img src="https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/android_list.jpg" width="350"/>
+  <img src="https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/android_detail.jpg" width="350"/>
+	</p>
