@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:selector="clr-namespace:Challenge201704.XamarinKorea.Selectors"
-             xmlns:cricleimage="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+		     xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              xmlns:prismbehavior="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
@@ -17,20 +18,20 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Image Source="{Binding Picture.Medium}" VerticalOptions="Center" Aspect="AspectFill">
+                        <ffimageloading:CachedImage Source="{Binding Picture.Medium}" VerticalOptions="Center" Aspect="AspectFill">
                             <Image.WidthRequest>
                                 <OnPlatform x:TypeArguments="x:Double" iOS="55" Android="55" WinPhone="75"/>
                             </Image.WidthRequest>
                             <Image.HeightRequest>
                                 <OnPlatform x:TypeArguments="x:Double" iOS="55" Android="55" WinPhone="75"/>
                             </Image.HeightRequest>
-                        </Image>
+                        </ffimageloading:CachedImage>
                         <StackLayout Grid.Column="1" 
                                                Padding="5" 
                                                Spacing="3"
                                                VerticalOptions="Center">
-                            <Label Text="{Binding Name, Converter={StaticResource nameConverter}}" FontSize="Medium" FontAttributes = "Bold" TextColor = "{DynamicResource textColor}" LineBreakMode="TailTruncation"/>
-                            <Label Text="{Binding Email}" FontSize="Small" LineBreakMode="TailTruncation" TextColor = "{DynamicResource textColor}"/>
+                            <Label Text="{Binding Name, Converter={StaticResource nameConverter}}" FontSize="Medium" FontAttributes = "Bold"  LineBreakMode="TailTruncation"/>
+                            <Label Text="{Binding Email}" FontSize="Small" LineBreakMode="TailTruncation" TextColor = "Gray"/>
                         </StackLayout>
                     </Grid>
                 </ViewCell>
@@ -42,20 +43,23 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <cricleimage:CircleImage Source="{Binding Picture.Medium}" VerticalOptions="Center" >
-                            <cricleimage:CircleImage.WidthRequest>
+                        <ffimageloading:CachedImage Source="{Binding Picture.Medium}" VerticalOptions="Center" >
+                            <ffimageloading:CachedImage.WidthRequest>
                                 <OnPlatform x:TypeArguments="x:Double" iOS="55" Android="55" WinPhone="75"/>
-                            </cricleimage:CircleImage.WidthRequest>
-                            <cricleimage:CircleImage.HeightRequest>
+                            </ffimageloading:CachedImage.WidthRequest>
+                            <ffimageloading:CachedImage.HeightRequest>
                                 <OnPlatform x:TypeArguments="x:Double" iOS="55" Android="55" WinPhone="75"/>
-                            </cricleimage:CircleImage.HeightRequest>
-                        </cricleimage:CircleImage>
+                            </ffimageloading:CachedImage.HeightRequest>
+                            <ffimageloading:CachedImage.Transformations>
+                                <fftransformations:CircleTransformation />
+                            </ffimageloading:CachedImage.Transformations>
+                        </ffimageloading:CachedImage>
                         <StackLayout Grid.Column="1" 
                                      Padding="5" 
                                      Spacing="3"
                                      VerticalOptions="Center">
-                            <Label Text="{Binding Name, Converter={StaticResource nameConverter}}" FontSize="Medium" FontAttributes = "Bold" TextColor = "{DynamicResource textColor}" LineBreakMode="TailTruncation"/>
-                            <Label Text="{Binding Email}" FontSize="Small" LineBreakMode="TailTruncation" TextColor = "{DynamicResource textColor}"/>
+                            <Label Text="{Binding Name, Converter={StaticResource nameConverter}}" FontSize="Medium" FontAttributes = "Bold"  LineBreakMode="TailTruncation"/>
+                            <Label Text="{Binding Email}" FontSize="Small" LineBreakMode="TailTruncation" TextColor = "Gray"/>
                         </StackLayout>
                     </Grid>
                 </ViewCell>
@@ -74,7 +78,7 @@
                       IsRefreshing="{Binding IsRefreshing,Mode=OneWay}"
                       HasUnevenRows="True"
                       CachingStrategy="RecycleElement"
-                      BackgroundColor="{DynamicResource backgroundColor}"
+                      BackgroundColor="White"
                       ItemTemplate="{StaticResource genderDataTemplateSelector}">
                 <ListView.Behaviors>
                     <prismbehavior:EventToCommandBehavior EventName="ItemAppearing" 

@@ -7,6 +7,10 @@ using System.Linq;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Xamarin.Forms;
+using Prism.Services;
+using Plugin.Messaging;
+using Challenge201704.XamarinKorea.Helpers;
 
 namespace Challenge201704.XamarinKorea.ViewModels
 {
@@ -25,9 +29,13 @@ namespace Challenge201704.XamarinKorea.ViewModels
         #region Private Fields
 
         private User user;
-        //private Position position = new Position(37.79752, -122.40183);
+        private IPageDialogService dialogService;
         private DelegateCommand<Map> mapInitCommand;
+        private DelegateCommand dialNumberCommand;
+        private DelegateCommand messageNumberCommand;
+        private DelegateCommand emailCommand;
         private bool canNotSearchAddress;
+        private bool isBusy;
         #endregion
 
         #region Property Area
@@ -41,6 +49,11 @@ namespace Challenge201704.XamarinKorea.ViewModels
             set { SetProperty(ref user, value); }
         }
 
+        public bool IsBusy
+        {
+            get { return isBusy; }
+            set { SetProperty(ref isBusy, value); }
+        }
         /// <summary>
         /// 지도창에 주소 검색 가능 여부
         /// </summary>
@@ -53,9 +66,9 @@ namespace Challenge201704.XamarinKorea.ViewModels
         #endregion
 
         #region Constructor
-        public UserDetailPageViewModel()
+        public UserDetailPageViewModel(IPageDialogService dialogService)
         {
-            
+            this.dialogService = dialogService;
         }
         #endregion
 
@@ -68,7 +81,62 @@ namespace Challenge201704.XamarinKorea.ViewModels
         /// </remarks>
         public DelegateCommand<Map> MapInitCommand =>
                                         mapInitCommand ?? (mapInitCommand =
-                                                                new DelegateCommand<Map>( async(Map map) => await MapInit(map)));
+                                                                new DelegateCommand<Map>(async (Map map) => await MapInit(map)));
+
+        /// <summary>
+        /// 전화 걸기 Command
+        /// (iOS Simulator 에서는 지원이 안됨)
+        /// </summary>
+        public DelegateCommand DialNumberCommand => 
+                                        dialNumberCommand ?? (dialNumberCommand = 
+                                                                new DelegateCommand
+                                                                (
+                                                                    () => 
+                                                                    {
+                                                                        if (string.IsNullOrWhiteSpace(User.CellPhoneNumber))
+                                                                            return;
+
+                                                                            var phoneCallTask = MessagingPlugin.PhoneDialer;
+                                                                            if (phoneCallTask.CanMakePhoneCall)
+                                                                                phoneCallTask.MakePhoneCall(User.CellPhoneNumber.OnlyDigitNumber());
+                                                                    }
+                                                                ));
+        /// <summary>
+        /// SMS 발송 하기 Command
+        /// (iOS Simulator 에서는 지원이 안됨)
+        /// </summary>
+        public DelegateCommand MessageNumberCommand =>
+                                       messageNumberCommand ?? (messageNumberCommand =
+                                                               new DelegateCommand
+                                                               (
+                                                                   () =>
+                                                                   {
+                                                                       if (string.IsNullOrWhiteSpace(User.CellPhoneNumber))
+                                                                           return;
+                                                                       
+                                                                       var messageTask = MessagingPlugin.SmsMessenger;
+                                                                       if (messageTask.CanSendSms)
+                                                                           messageTask.SendSms(User.CellPhoneNumber.OnlyDigitNumber());
+                                                                   }
+                                                               ));
+        /// <summary>
+        /// Email 보내기 Command
+        /// (iOS Simulator 에서는 지원이 안됨)
+        /// </summary>
+        public DelegateCommand EmailCommand =>
+                                        emailCommand ?? (emailCommand =
+                                                                new DelegateCommand
+                                                                (
+                                                                    () =>
+                                                                    {
+                                                                        if (string.IsNullOrWhiteSpace(User.Email))
+                                                                            return;
+
+                                                                        var emailTask = MessagingPlugin.EmailMessenger;
+                                                                        if (emailTask.CanSendEmail)
+                                                                            emailTask.SendEmail(User.Email);
+                                                                    }
+                                                                ));
         #endregion
 
         #region INavagationAware 인터페이스 구현
@@ -77,22 +145,22 @@ namespace Challenge201704.XamarinKorea.ViewModels
          */
         public void OnNavigatedFrom(NavigationParameters parameters)
         {
-            
+
         }
 
         public void OnNavigatedTo(NavigationParameters parameters)
         {
-            
+
         }
 
         public void OnNavigatingTo(NavigationParameters parameters)
         {
-            if(parameters.ContainsKey("user"))
+            if (parameters.ContainsKey("user"))
                 User = (User)parameters["user"];
         }
         #endregion
 
-        #region Private Method
+        #region 주소 검색용 Private Method
         /// <summary>
         /// 사용자 주소정보를 이용하여 지도에 표시하기
         /// </summary>
@@ -101,22 +169,28 @@ namespace Challenge201704.XamarinKorea.ViewModels
         {
             if (map is null)
                 return;
+            IsBusy = true;
             try
             {
                 var geocoder = new Geocoder();
                 var address = $"{User.Address.Street}, {User.Address.City}, {User.Address.State}";
+
+                /*
+                 * 주소 검색으로 위치 정보 가져오기
+                 * 사족 : 주소정보가 정확하지 않아서 인지는 모르겠지만 위치정보 검색률이 많이 낮네요 T.T
+                 */
                 var positions = await geocoder.GetPositionsForAddressAsync(address);
-                
-                if(positions?.Count() > 0)
+
+                if (positions?.Count() > 0)
                 {
                     //주소 검색으로 찾은 위치 정보중 첫번째 위치 정보만 이용
                     var position = positions.FirstOrDefault();
-                    map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromKilometers(5)));
+                    map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromKilometers(10)));
                     var pin = new Pin
                     {
                         Type = PinType.Place,
                         Position = position,
-                        Label = $"{User.Name.First}'s Home" ,
+                        Label = $"{User.Name.First}'s Home",
                         Address = address
                     };
                     map.Pins.Add(pin);
@@ -124,27 +198,47 @@ namespace Challenge201704.XamarinKorea.ViewModels
                 }
                 else
                 {
-                    //주소 검색이 되지 않을경우 기본 지도 화면 보여주기
-                    //var position = new Position(37.7767729, -122.4188051);
-                    //map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromKilometers(5)));
-                    //var pin = new Pin
-                    //{
-                    //    Type = PinType.SavedPin,
-                    //    Position = position,
-                    //    Label = "자마린 본사",
-                    //};
-                    //map.Pins.Add(pin);
-                    CanNotSearchAddress = true;
+                    //주소 검색이 되지 않을경우 국가 코드로 검색해 보기
+                    address = $"{User.Address.State} {User.Nationality}";
+                    var position = (await geocoder.GetPositionsForAddressAsync(address)).FirstOrDefault();
+                    if(position.Latitude == 0 && position.Longitude == 0)
+                    {
+                        //var position = new Position(37.7767729, -122.4188051);
+                        //map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromKilometers(5)));
+                        //var pin = new Pin
+                        //{
+                        //    Type = PinType.SavedPin,
+                        //    Position = position,
+                        //    Label = "자마린 본사",
+                        //};
+                        //map.Pins.Add(pin);
+                        CanNotSearchAddress = true;
+                    }
+                    else
+                    {
+                        map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromMiles(500)));
+                        var pin = new Pin
+                        {
+                            Type = PinType.Place,
+                            Position = position,
+                            Label = address,
+                        };
+                        map.Pins.Add(pin);
+                        CanNotSearchAddress = false;
+                    }
                 }
-                
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 CanNotSearchAddress = true;
                 Debug.WriteLine($"Error in: {ex}");
             }
+            finally
+            {
+                IsBusy = false;
+            }
         }
         #endregion
-
     }
 }

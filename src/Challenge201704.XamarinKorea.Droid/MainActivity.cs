@@ -1,14 +1,10 @@
-﻿using System;
-
+﻿
 using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Android.OS;
 using Prism.Unity;
 using Microsoft.Practices.Unity;
-using ImageCircle.Forms.Plugin.Droid;
+using FFImageLoading.Forms.Droid;
 
 namespace Challenge201704.XamarinKorea.Droid
 {
@@ -24,8 +20,8 @@ namespace Challenge201704.XamarinKorea.Droid
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
-            //Circle Image Plugin 초기화
-            ImageCircleRenderer.Init();
+            //FFImageLoading 초기화
+            CachedImageRenderer.Init();
             //Xamarin Forms Map 초기화 하기
             Xamarin.FormsMaps.Init(this, bundle);
 

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
+﻿
 using Foundation;
 using UIKit;
 using Prism.Unity;
 using Microsoft.Practices.Unity;
-using ImageCircle.Forms.Plugin.iOS;
+using FFImageLoading.Forms.Touch;
 
 namespace Challenge201704.XamarinKorea.iOS
 {
@@ -26,8 +23,9 @@ namespace Challenge201704.XamarinKorea.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            //Cricle Image Plugin 초기화
-            ImageCircleRenderer.Init();
+
+            //FFImageLoading 초기화
+            CachedImageRenderer.Init();
             //Xamarin Form Map 사용 초기화 하기
             Xamarin.FormsMaps.Init();
 

@@ -3,20 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              xmlns:prismbehavior="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-             xmlns:cricleimage="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+		     xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Challenge201704.XamarinKorea.Views.UserDetailPage"
              xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
              xmlns:converter="clr-namespace:Challenge201704.XamarinKorea.Converters"
              xmlns:selector="clr-namespace:Challenge201704.XamarinKorea.Selectors"
-             BackgroundColor="{DynamicResource backgroundColor}"
-             Title="{Binding User.Name, Converter={StaticResource nameConverter}}"
-             >
+             Title="{Binding User.Name, Converter={StaticResource nameConverter}}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converter:AddressConverter x:Key="addressConverter" />
-            <converter:IsMaleConverter x:Key="isMaleConverter" />
-            <converter:IsFemaleConverter x:Key="isFemaleConverter" />
+            <converter:IsFemaleConverter x:Key="isFemaleConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Behaviors>
@@ -25,85 +22,94 @@
                                         CommandParameter="{Reference AddressMap}" />
     </ContentPage.Behaviors>
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout Padding="10">
-                <Grid Padding="8,5" >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <!-- Control Templete Selector가 있으면 하는 바람-->
-                    <Image
-                        Grid.ColumnSpan="2"
-                        HeightRequest="200"
-                        WidthRequest="200"
-                        HorizontalOptions="CenterAndExpand"
-                        VerticalOptions="CenterAndExpand"
-                        Aspect="AspectFill"
-                        Source="{Binding User.Picture.Large}"
-                        IsVisible="{Binding User.Gender, Converter={StaticResource isMaleConverter}}"
-                        />
-                    <cricleimage:CircleImage
-                            Grid.ColumnSpan="2"
-                            HeightRequest="200"
-                            WidthRequest="200"
-                            HorizontalOptions="CenterAndExpand"
-                            VerticalOptions="CenterAndExpand"
-                            Aspect="AspectFill"
-                            Source="{Binding User.Picture.Large}" 
-                            IsVisible="{Binding User.Gender, Converter={StaticResource isFemaleConverter}}"
-                            />
-                    <!-- Control Templete Selector가 있으면 하는 바람-->
-                    <Label Text="이름 " 
-                           Grid.Row="1"/>
-                    <Label Text="{Binding User.Name,Converter={StaticResource nameConverter}}" 
-                           FontAttributes="Bold" 
-                           LineBreakMode="WordWrap"
-                           Grid.Row="1" 
-                           Grid.Column="1"/>
-                    <Label Text="이메일 " 
-                           Grid.Row="2"/>
-                    <Label Text="{Binding User.Email}" 
-                           LineBreakMode="WordWrap"
-                           Grid.Row="2"
-                           Grid.Column="1"/>
-                    <Label Text="생일 " 
-                           Grid.Row="3"/>
-                    <Label Text="{Binding User.BirthDay, StringFormat='{0:yyyy-MM-dd}'}" 
-                           LineBreakMode="WordWrap"
-                           Grid.Row="3" 
-                           Grid.Column="1"/>
-                    <Label Text="주소" 
-                           Grid.Row="4"/>
-                    <Label Text="{Binding User.Address, Converter={StaticResource addressConverter}}" 
-                           LineBreakMode="WordWrap"
-                           Grid.Row="4" 
-                           Grid.Column="1"/>
-                    <maps:Map VerticalOptions="Fill" 
-                              HeightRequest="200"
-                              x:Name="AddressMap"
-                              IsShowingUser="true"
-                              MapType="Hybrid"
-                              Grid.Row="5"
-                              Grid.ColumnSpan="2"
-                              >
-                    </maps:Map>
-                    <Label Text="아쉽지만 주소를 표시할 수 없어요 T.T" 
-                           Grid.Row="6"
-                           Grid.ColumnSpan="2" 
-                           TextColor="Aqua"
-                           IsVisible="{Binding CanNotSearchAddress}"/>
-                </Grid>
+        <AbsoluteLayout>
+            <StackLayout Spacing="0" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+                <ContentView Padding="10">
+                    <StackLayout Orientation="Horizontal" Spacing="10">
+                        <AbsoluteLayout>
+                            <ffimageloading:CachedImage x:Name="ProfilePhoto" 
+                                                        HorizontalOptions="Center" 
+                                                        VerticalOptions="Center" 
+                                                        WidthRequest="90" 
+                                                        HeightRequest="90" 
+                                                        DownsampleToViewSize="true" 
+                                                        Source="{Binding User.Picture.Large}" 
+                                                        LoadingPlaceholder="placeholderProfileImage.png">
+                                <ffimageloading:CachedImage.Transformations>
+                                    <fftransformations:CircleTransformation BorderSize="5" BorderHexColor="#547799"/>
+                                </ffimageloading:CachedImage.Transformations>
+                            </ffimageloading:CachedImage>
+                        </AbsoluteLayout>
+                        <StackLayout Spacing="10">
+                            <ContentView>
+                                <StackLayout Spacing="10" Orientation="Horizontal">
+                                    <Image Source="male_icon.png" Aspect="AspectFit" HeightRequest="20" WidthRequest="20">
+                                        <Image.Triggers>
+                                            <DataTrigger TargetType="Image" Binding="{Binding User.Gender, Converter={StaticResource isFemaleConverter}}" Value="True">
+                                                <Setter Property="Source" Value="female_icon.png"/>
+                                            </DataTrigger>
+                                        </Image.Triggers>
+                                    </Image>
+                                    <Label Text="{Binding User.BirthDay, StringFormat='{0:yyyy-MM-dd}'}" FontSize="Small" TextColor="Silver" />
+                                </StackLayout>
+                            </ContentView>
+                            <ContentView >
+                                <StackLayout Orientation="Horizontal" Spacing="10">
+                                    <Image Source="directions.png" Aspect="AspectFit" HeightRequest="20" WidthRequest="20"/>
+                                    <StackLayout Spacing="0">
+                                        <Label Text="{Binding User.Address.Street}" FontSize="Micro" LineBreakMode="TailTruncation" />
+                                        <Label Text="{Binding User.Address.City}" FontSize="Micro" LineBreakMode="TailTruncation" />
+                                        <StackLayout Orientation="Horizontal" Spacing="10">
+                                            <Label Text="{Binding User.Address.State}" FontSize="Micro" LineBreakMode="TailTruncation" />
+                                            <Label Text="{Binding User.Nationality}" FontSize="Micro" LineBreakMode="TailTruncation" />
+                                        </StackLayout>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ContentView>
+                            <ContentView>
+                                <StackLayout Orientation="Horizontal" Spacing="10">
+                                    <Image Source="message.png" Aspect="AspectFit" HeightRequest="20" WidthRequest="20">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding MessageNumberCommand}" NumberOfTapsRequired="1" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                    <Label Text="{Binding User.CellPhoneNumber}" FontSize="Small" HeightRequest="20" VerticalTextAlignment="Center" LineBreakMode="TailTruncation" />
+                                    <Image Source="phone.png" Aspect="AspectFit" HeightRequest="20" WidthRequest="20">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding DialNumberCommand}" NumberOfTapsRequired="1" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </StackLayout>
+                            </ContentView>
+                            <ContentView>
+                                <StackLayout Orientation="Horizontal" Spacing="10">
+                                    <Image Source="email.png" Aspect="AspectFit" HeightRequest="20" WidthRequest="20">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding EmailCommand}" NumberOfTapsRequired="1" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                    <Label Text="{Binding User.Email}" FontSize="Micro" HeightRequest="20" LineBreakMode="TailTruncation" VerticalTextAlignment="Center" />
+                                </StackLayout>
+                            </ContentView>
+                        </StackLayout>
+                    </StackLayout>
+                </ContentView>
+                <ContentView VerticalOptions="Center" IsVisible="{Binding CanNotSearchAddress}" IsEnabled="{Binding CanNotSearchAddress}">
+                    <StackLayout Spacing="10">
+                        <Label Text="아쉽지만 주소를 표시할 수 없어요 T.T" 
+                               TextColor="IndianRed"
+                               FontSize="Micro"
+                               />
+                    </StackLayout>
+                </ContentView>
+                <ContentView HeightRequest="1" BackgroundColor="Silver" />
+                <AbsoluteLayout VerticalOptions="FillAndExpand">
+                    <AbsoluteLayout AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1.0, 1.0">
+                        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional" AbsoluteLayout.LayoutBounds="0.5, 0.5, 0.2, AutoSize" />
+                        <maps:Map x:Name="AddressMap" AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0, 0, 1.0, 1.0" />
+                    </AbsoluteLayout>
+                </AbsoluteLayout>
             </StackLayout>
-        </ScrollView>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>
