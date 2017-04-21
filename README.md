@@ -5,16 +5,7 @@
 - Visual Studio 2017 Community
 - Prism.Forms , Prism.Unity.Forms (https://github.com/PrismLibrary/Prism)
 - Xamarin.Forms.Maps (https://developer.xamarin.com/guides/xamarin-forms/user-interface/map/)
-  -> Andorid, UWP 에서 Maps 사용시 별도의 API 키값이 필요 
-  
-    Android project: `~/Properties/AndroidManifest.xml`:
-
-    <application ...>
-      ...
-      <meta-data android:name="com.google.android.geo.API_KEY" android:value="GOOGLE_MAPS_API_KEY" />
-      ...
-    </application>
-    
+  -> Andorid, UWP 에서 Maps 사용시 별도의 API 키값이 필요   
 - Xamarin.FFImageLoading.Forms(https://github.com/luberda-molinet/FFImageLoading)
 - Xamarin.Plugins : Plugin.Messaging (https://github.com/cjlotz/Xamarin.Plugins/tree/master/Messaging)
 - UI 참조 : https://www.xamarin.com/prebuilt -> Acquaint
