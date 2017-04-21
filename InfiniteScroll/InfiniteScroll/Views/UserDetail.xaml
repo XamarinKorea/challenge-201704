@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" 
+             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             x:Class="InfiniteScroll.Views.UserDetail"
+             BackgroundColor="#e7e7e7"
+             Title="사용자 정보"
+             Padding="0">
+    <ScrollView>
+        <StackLayout Orientation="Vertical" HorizontalOptions="Fill" VerticalOptions="Fill" Padding="0,0,0,0">
+            <StackLayout Orientation="Vertical" WidthRequest="180" BackgroundColor="#5ebdcf">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="100" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="3*" />
+                    </Grid.ColumnDefinitions>
+                    <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+                        <Label Text="&#xf0a8;"  WidthRequest="19" FontSize="Large" TextColor="White"  TranslationX="10">
+                            <Label.FontFamily>
+                                <OnPlatform x:TypeArguments="x:String"
+                                                      iOS="FontAwesome"
+                                                      Android="Fonts/FontAwesome.otf">
+                                </OnPlatform>
+                            </Label.FontFamily>
+                            <Label.TranslationY>
+                                <OnPlatform x:TypeArguments="x:Double"
+                                                      iOS="0"
+                                                      Android="3">
+                                </OnPlatform>
+                            </Label.TranslationY>
+                        </Label>
+                        <Label Text="Back" FontSize="Medium"  TextColor="White" TranslationX="10">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                 Command="{Binding tapBack}" 
+                                 NumberOfTapsRequired="1" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <ffimageloading:CachedImage HorizontalOptions="Center" VerticalOptions="Center"
+                                    Grid.Row="1" Grid.Column="1"
+                                    WidthRequest="100" HeightRequest="100"
+                                    DownsampleToViewSize="true"
+                                    Source="{Binding userinfo.Picturelarge}">
+                        <ffimageloading:CachedImage.Transformations>
+                            <fftransformations:CircleTransformation BorderSize="1" BorderHexColor="#000000"/>
+                        </ffimageloading:CachedImage.Transformations>
+                    </ffimageloading:CachedImage>
+                    <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding userinfo.Name}" FontSize="Large" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center" />
+                    <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding userinfo.Location}" FontSize="Small"  TextColor="#b8d9da"  HorizontalTextAlignment="Center" />
+                </Grid>
+            </StackLayout>
+            <StackLayout Orientation="Vertical" HorizontalOptions="Fill" VerticalOptions="FillAndExpand" Padding="15,15,15,0">
+                <Frame Margin="0,6,0,6">
+                    <StackLayout Orientation="Vertical">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="&#xf21d;"  WidthRequest="19" FontSize="Medium" TextColor="#63708f">
+                                <Label.FontFamily>
+                                    <OnPlatform x:TypeArguments="x:String"
+                                                      iOS="FontAwesome"
+                                                      Android="Fonts/FontAwesome.otf">
+                                    </OnPlatform>
+                                </Label.FontFamily>
+                                <Label.TranslationY>
+                                    <OnPlatform x:TypeArguments="x:Double"
+                                                      iOS="0"
+                                                      Android="4">
+                                    </OnPlatform>
+                                </Label.TranslationY>
+                            </Label>
+                            <Label Text="Location" FontSize="Medium"  TextColor="#63708f"></Label>
+                        </StackLayout>
+                        <BoxView HeightRequest="2" BackgroundColor="#cfd9e4" Margin="0,8,0,8"></BoxView>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="street" FontSize="Small" WidthRequest="90" FontAttributes="Bold" TextColor="#363e51" TranslationX="10"></Label>
+                            <Label Text="{Binding userinfo.LocationStreet}" FontSize="Small" TextColor="#63708f"></Label>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="city" FontSize="Small" WidthRequest="90" FontAttributes="Bold" TextColor="#363e51" TranslationX="10"></Label>
+                            <Label Text="{Binding userinfo.LocationCity}" FontSize="Small"  TextColor="#63708f"></Label>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="state" FontSize="Small" WidthRequest="90" FontAttributes="Bold" TextColor="#363e51" TranslationX="10"></Label>
+                            <Label Text="{Binding userinfo.LocationState}" FontSize="Small"  TextColor="#63708f"></Label>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+                <Frame Margin="0,6,0,6">
+                    <StackLayout Orientation="Vertical">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="&#xf011;"  WidthRequest="19" FontSize="Medium" TextColor="#63708f">
+                                <Label.FontFamily>
+                                    <OnPlatform x:TypeArguments="x:String"
+                                                      iOS="FontAwesome"
+                                                      Android="Fonts/FontAwesome.otf">
+                                    </OnPlatform>
+                                </Label.FontFamily>
+                                <Label.TranslationY>
+                                    <OnPlatform x:TypeArguments="x:Double"
+                                                      iOS="0"
+                                                      Android="5">
+                                    </OnPlatform>
+                                </Label.TranslationY>
+                            </Label>
+                            <Label Text="Login" FontSize="Medium"  TextColor="#63708f"></Label>
+                        </StackLayout>
+                        <BoxView HeightRequest="2" BackgroundColor="#cfd9e4" Margin="0,8,0,8"></BoxView>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="email" FontSize="Small" WidthRequest="90" FontAttributes="Bold" TextColor="#363e51" TranslationX="10"></Label>
+                            <Label Text="{Binding userinfo.Email}" FontSize="Small" TextColor="#63708f"></Label>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="username" FontSize="Small" WidthRequest="90" FontAttributes="Bold" TextColor="#363e51" TranslationX="10"></Label>
+                            <Label Text="{Binding userinfo.LoginUsername}" FontSize="Small"  TextColor="#63708f"></Label>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="password" FontSize="Small" WidthRequest="90" FontAttributes="Bold" TextColor="#363e51" TranslationX="10"></Label>
+                            <Label Text="{Binding userinfo.LoginPassword}" FontSize="Small"  TextColor="#63708f"></Label>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+                <Frame Margin="0,6,0,30">
+                    <StackLayout Orientation="Vertical">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="&#xf29c;"  WidthRequest="19" FontSize="Medium" TextColor="#63708f">
+                                <Label.FontFamily>
+                                    <OnPlatform x:TypeArguments="x:String"
+                                                      iOS="FontAwesome"
+                                                      Android="Fonts/FontAwesome.otf">
+                                    </OnPlatform>
+                                </Label.FontFamily>
+                                <Label.TranslationY>
+                                    <OnPlatform x:TypeArguments="x:Double"
+                                                      iOS="0"
+                                                      Android="4">
+                                    </OnPlatform>
+                                </Label.TranslationY>
+                            </Label>
+                            <Label Text="Etc" FontSize="Medium"  TextColor="#63708f"></Label>
+                        </StackLayout>
+                        <BoxView HeightRequest="2" BackgroundColor="#cfd9e4" Margin="0,8,0,8"></BoxView>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="dob" FontSize="Small" WidthRequest="90" FontAttributes="Bold" TextColor="#363e51" TranslationX="10"></Label>
+                            <Label Text="{Binding userinfo.Dob}" FontSize="Small" TextColor="#63708f"></Label>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="registered" FontSize="Small" WidthRequest="90" FontAttributes="Bold" TextColor="#363e51" TranslationX="10"></Label>
+                            <Label Text="{Binding userinfo.Registered}" FontSize="Small"  TextColor="#63708f"></Label>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="phone" FontSize="Small" WidthRequest="90" FontAttributes="Bold" TextColor="#363e51" TranslationX="10"></Label>
+                            <Label Text="{Binding userinfo.Phone}" FontSize="Small"  TextColor="#63708f"></Label>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="cell" FontSize="Small" WidthRequest="90" FontAttributes="Bold" TextColor="#363e51" TranslationX="10"></Label>
+                            <Label Text="{Binding userinfo.Cell}" FontSize="Small"  TextColor="#63708f"></Label>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
