@@ -24,5 +24,12 @@
   INotifyPropertyChanged 처리를 위한 BindableBase
   
   
-  결과화면
-  ![alt tag](https://github.com/rtrue/challenge-201704/tree/master/screen)
+#  결과화면
+  
+  ios
+  ![alt tag](https://github.com/rtrue/challenge-201704/tree/master/screen/ios_list.jpg)
+  ![alt tag](https://github.com/rtrue/challenge-201704/tree/master/screen/ios_detail.jpg)
+  
+  android
+  ![alt tag](https://github.com/rtrue/challenge-201704/tree/master/screen/android_list.jpg)
+  ![alt tag](https://github.com/rtrue/challenge-201704/tree/master/screen/android_detail.jpg)
