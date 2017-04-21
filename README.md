@@ -28,11 +28,11 @@
   
   ios
   <p align="center">
-  <img src="https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/ios_list.jpg" width="350"/>
-  <img src="https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/ios_detail.jpg" width="350"/>
+  <img src="https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/ios_list.jpg" width="320"/>
+  <img src="https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/ios_detail.jpg" width="320"/>
 	</p>
 	android
 	<p align="center">
-  <img src="https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/android_list.jpg" width="350"/>
-  <img src="https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/android_detail.jpg" width="350"/>
+  <img src="https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/android_list.jpg" width="360"/>
+  <img src="https://raw.githubusercontent.com/rtrue/challenge-201704/master/screen/android_detail.jpg" width="360"/>
 	</p>
