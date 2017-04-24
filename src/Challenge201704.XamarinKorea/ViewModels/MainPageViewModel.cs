@@ -77,7 +77,10 @@ namespace Challenge201704.XamarinKorea.ViewModels
         public bool IsRefreshing
         {
             get { return isRefreshing; }
-            set { SetProperty(ref isRefreshing, value); }
+            set {
+                SetProperty(ref isRefreshing, value);
+                IsNotBusy = !isRefreshing;
+            }
         }
         #endregion
 
@@ -93,7 +96,7 @@ namespace Challenge201704.XamarinKorea.ViewModels
 
                             await LoadData();
 
-                            isRefreshing = false;
+                            IsRefreshing = false;
                         }
                     ).Wait();
         }
@@ -137,7 +140,7 @@ namespace Challenge201704.XamarinKorea.ViewModels
                                                     (
                                                         async (User user) => 
                                                         {
-                                                            if (IsBusy || Users.Count == 0)
+                                                            if (isBusy || Users.Count == 0)
                                                                 return;
 
                                                             IsBusy = true;
@@ -194,11 +197,6 @@ namespace Challenge201704.XamarinKorea.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error in: {ex}");
-            }
-            finally
-            {
-                IsRefreshing = false;
-                IsBusy = false;
             }
         }
         #endregion
