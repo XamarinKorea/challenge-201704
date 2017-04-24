@@ -1,51 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xamarin.Forms;
 
 namespace clg1704
 {
-	public partial class clg1704Page : ContentPage
+	public class MainPageViewModel : BaseViewModel
 	{
 
 		public ObservableCollectionCustomized<UserItem> listUser = new ObservableCollectionCustomized<UserItem>();
 
 		private bool isLoading = false;
+		private bool isRefreshing = false;
+
+		//private uint nItemIdx = 0;
 
 
-		public clg1704Page()
+		public MainPageViewModel()
 		{
-			InitializeComponent();
-
-			lv.ItemsSource = listUser;
-
-			aIndicator.IsRunning = false;
-
 			getDataFirst();
 		}
 
-
-		private async Task getDataFirst()
+		public async Task getDataFirst()
 		{
 			ObservableCollectionCustomized<UserItem> gotData = await getRandomData();
 
-			listUser.AddRange( gotData );
+			listUser.AddRange(gotData);
 		}
-
 
 		private async Task<ObservableCollectionCustomized<UserItem>> getRandomData()
 		{
 			if (isLoading) return new ObservableCollectionCustomized<UserItem>();
 
-			isLoading = true;
-			aIndicator.IsRunning = true;
-
-			Debug.WriteLine("get data");
+			IsLoading = true;
 
 			const string RANDON_DATA_URL = "https://randomuser.me/api/?results=20&nat=AU,BR,CA,CH,DE,DK,ES,FI,FR,GB,IE,NL,NZ,TR,US";
 
@@ -69,16 +59,40 @@ namespace clg1704
 			JObject json = JObject.Parse(result);
 			JArray jarray = (JArray)json["results"];
 
-			ObservableCollectionCustomized<UserItem> gotData = makeUserDataPretty( jarray );
+			ObservableCollectionCustomized<UserItem> gotData = makeUserDataPretty(jarray);
 
-			isLoading = false;
-			aIndicator.IsRunning = false;
+			IsLoading = false;
 
 			return gotData;
 		}
 
+		public async void OnItemAppearing(object sender, ItemVisibilityEventArgs e)
+		{
+			if ((UserItem)e.Item == listUser[listUser.Count - 1])
+			{
+				Debug.WriteLine("last item");
 
-		private ObservableCollectionCustomized<UserItem> makeUserDataPretty( JArray jarray )
+				ObservableCollectionCustomized<UserItem> gotData = await getRandomData();
+
+				listUser.AddRange(gotData);
+			}
+		}
+
+
+		public async void OnRefreshing(object sender, EventArgs e)
+		{
+			Debug.WriteLine( "OnRefreshing" );
+
+			IsRefreshing = false;
+
+			ObservableCollectionCustomized<UserItem> gotData = await getRandomData();
+
+			listUser.Clear();
+
+			listUser.AddRange(gotData);
+		}
+
+		private ObservableCollectionCustomized<UserItem> makeUserDataPretty(JArray jarray)
 		{
 			ObservableCollectionCustomized<UserItem> gotData = new ObservableCollectionCustomized<UserItem>();
 
@@ -92,15 +106,13 @@ namespace clg1704
 
 				userItem.NameFirst = (string)item["name"]["first"];
 
-				userItem.LocationCity = (string)item["location"]["city"];
-				userItem.LocationState = (string)item["location"]["state"];
-
 				userItem.Cell = (string)item["cell"];
 
 				userItem.PictureLarge = (string)item["picture"]["large"];
 				userItem.PictureThumbnail = (string)item["picture"]["thumbnail"];
 
-				userItem.Nat = (string)item["nat"];
+				//userItem.Idx = nItemIdx;
+				//++nItemIdx;
 
 				gotData.Add(userItem);
 			}
@@ -108,46 +120,44 @@ namespace clg1704
 			return gotData;
 		}
 
-
-		private async void OnItemAppearing(object sender, ItemVisibilityEventArgs e)
+		public ObservableCollectionCustomized<UserItem> ListUser
 		{
-			if( (UserItem)e.Item == listUser[ listUser.Count - 1 ] )
+			get
 			{
-				Debug.WriteLine("last item");
-
-				ObservableCollectionCustomized<UserItem> gotData = await getRandomData();
-
-				listUser.AddRange( gotData );
+				return listUser;
+			}
+			set
+			{
+				listUser = value;
 			}
 		}
 
-
-		private async void OnRefreshing(object sender, EventArgs e)
+		public bool IsLoading
 		{
-			lv.IsRefreshing = false;
+			get
+			{
+				return isLoading;
+			}
+			set
+			{
+				isLoading = value;
 
-			ObservableCollectionCustomized<UserItem> gotData = await getRandomData();
-
-			listUser.Clear();
-
-			listUser.AddRange( gotData );
+				OnPropertyChanged( "IsLoading" );
+			}
 		}
 
-
-		private async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+		public bool IsRefreshing
 		{
-			if (e.SelectedItem == null)
+			get
 			{
-				return; //ItemSelected is called on deselection, which results in SelectedItem being set to null
+				return isRefreshing;
 			}
+			set
+			{
+				isRefreshing = value;
 
-			UserItem model = lv.SelectedItem as UserItem;
-
-			lv.SelectedItem = null;
-
-			DetailPage detail = new DetailPage( model );
-
-			await Navigation.PushAsync(detail);
+				OnPropertyChanged("IsRefreshing");
+			}
 		}
 
 	}

@@ -50,18 +50,12 @@ namespace clg1704
 
 		public string NameFirst { get; set; }
 
-		public string LocationCity { get; set; }
-		public string LocationState { get; set; }
-
 		public string Cell { get; set; }
 
 		public string PictureLarge { get; set; }
 		public string PictureThumbnail { get; set; }
 
-		public string Nat { get; set; }
-
-		public int Idx { get; set; }
-
+		public uint Idx { get; set; }
 
 
 		public Color CellTextColor 
