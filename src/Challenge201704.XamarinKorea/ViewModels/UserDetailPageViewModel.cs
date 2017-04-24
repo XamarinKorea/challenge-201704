@@ -29,7 +29,6 @@ namespace Challenge201704.XamarinKorea.ViewModels
         #region Private Fields
 
         private User user;
-        private IPageDialogService dialogService;
         private DelegateCommand<Map> mapInitCommand;
         private DelegateCommand dialNumberCommand;
         private DelegateCommand messageNumberCommand;
@@ -66,9 +65,9 @@ namespace Challenge201704.XamarinKorea.ViewModels
         #endregion
 
         #region Constructor
-        public UserDetailPageViewModel(IPageDialogService dialogService)
+        public UserDetailPageViewModel()
         {
-            this.dialogService = dialogService;
+            
         }
         #endregion
 
@@ -96,7 +95,7 @@ namespace Challenge201704.XamarinKorea.ViewModels
                                                                         if (string.IsNullOrWhiteSpace(User.CellPhoneNumber))
                                                                             return;
 
-                                                                            var phoneCallTask = MessagingPlugin.PhoneDialer;
+                                                                        var phoneCallTask = CrossMessaging.Current.PhoneDialer;
                                                                             if (phoneCallTask.CanMakePhoneCall)
                                                                                 phoneCallTask.MakePhoneCall(User.CellPhoneNumber.OnlyDigitNumber());
                                                                     }
@@ -114,7 +113,7 @@ namespace Challenge201704.XamarinKorea.ViewModels
                                                                        if (string.IsNullOrWhiteSpace(User.CellPhoneNumber))
                                                                            return;
                                                                        
-                                                                       var messageTask = MessagingPlugin.SmsMessenger;
+                                                                       var messageTask = CrossMessaging.Current.SmsMessenger;
                                                                        if (messageTask.CanSendSms)
                                                                            messageTask.SendSms(User.CellPhoneNumber.OnlyDigitNumber());
                                                                    }
@@ -132,7 +131,7 @@ namespace Challenge201704.XamarinKorea.ViewModels
                                                                         if (string.IsNullOrWhiteSpace(User.Email))
                                                                             return;
 
-                                                                        var emailTask = MessagingPlugin.EmailMessenger;
+                                                                        var emailTask = CrossMessaging.Current.EmailMessenger;
                                                                         if (emailTask.CanSendEmail)
                                                                             emailTask.SendEmail(User.Email);
                                                                     }
