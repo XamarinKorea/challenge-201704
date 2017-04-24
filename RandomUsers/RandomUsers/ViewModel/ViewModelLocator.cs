@@ -27,7 +27,7 @@ namespace RandomUsers
                 return ServiceLocator.Current.GetInstance<MainPageViewModel>();
             }
         }
-
+        
         public UserDetailViewModel Detail
         {
             get

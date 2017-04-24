@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:RandomUsers"
              xmlns:lib ="clr-namespace:RandomUsers.Lib"
              xmlns:controls="clr-namespace:RandomUsers.Controls"
-             Title="RandomUsers"
+             Title="Random Users"
              BindingContext="{Binding Main,Source={StaticResource Locator}}"
              x:Class="RandomUsers.MainPage">
     <StackLayout>
@@ -15,6 +15,5 @@
                 <lib:EventToCommandBehavior EventName="ItemTapped" Command="{Binding TappedCommand}" />
             </ListView.Behaviors>
         </controls:InfiniteListView>
-
     </StackLayout>
 </ContentPage>

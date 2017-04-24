@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using RandomUsers.Lib;
 using RandomUsers.Models;
 using RandomUsers.Service;
 using System.Collections.ObjectModel;
@@ -12,12 +13,12 @@ namespace RandomUsers.ViewModel
     {
         private DataService _dataservice;
         private bool _isRefresh;
-        private ObservableCollection<User> _users;
+        private ObservableList<User> _users;
 
         public MainPageViewModel()
         {
             _dataservice = new DataService();
-            Users = new ObservableCollection<User>();
+            Users = new ObservableList<User>();
             RefreshCommand = new RelayCommand(RefreshData);
             MoreCommand = new RelayCommand(More);
             TappedCommand = new RelayCommand<ItemTappedEventArgs>(Tapped);
@@ -43,7 +44,7 @@ namespace RandomUsers.ViewModel
         public ICommand RefreshCommand { get; private set; }
         public ICommand TappedCommand { get; private set; }
 
-        public ObservableCollection<User> Users
+        public ObservableList<User> Users
         {
             get { return _users; }
             set { _users = value; RaisePropertyChanged(); }
@@ -64,7 +65,7 @@ namespace RandomUsers.ViewModel
         {
             IsRefresh = true;
             var items = await _dataservice.GetUsers();
-            Users = new ObservableCollection<User>(items);
+            Users = new ObservableList<User>(items);
             IsRefresh = false;
         }
 

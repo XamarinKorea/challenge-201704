@@ -14,6 +14,7 @@ namespace RandomUsers
             
         }
         public static string Json;
+        
         public App(string json)
         {
             Json = json;

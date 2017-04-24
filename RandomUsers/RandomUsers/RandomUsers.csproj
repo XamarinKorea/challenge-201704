@@ -46,7 +46,11 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Result.cs" />
+    <Compile Include="Models\ResultInfo.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserLocation.cs" />
+    <Compile Include="Models\UserName.cs" />
+    <Compile Include="Models\UserPicture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserDataTemplateSelector.cs" />
     <Compile Include="UserDetail.xaml.cs">
@@ -54,15 +58,12 @@
     </Compile>
     <Compile Include="Service\DataService.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
+    <Compile Include="Lib\ObservableList.cs" />
     <Compile Include="ViewModel\PageViewModelBase.cs" />
     <Compile Include="ViewModel\UserDetailViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MainPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
@@ -119,6 +120,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UserDetail.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MainPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
