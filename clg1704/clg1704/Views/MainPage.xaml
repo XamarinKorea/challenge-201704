@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
 	xmlns:local="clr-namespace:clg1704;assembly=clg1704" x:Class="clg1704.MainPage"
 	Title="Users">
-	<RelativeLayout>
+	<RelativeLayout HorizontalOptions="FillAndExpand">
 		<ListView x:Name="lvMain" IsPullToRefreshEnabled="true"
 			ItemSelected="OnItemSelected" ItemAppearing="OnItemAppearing"
 			Refreshing="OnRefreshing" ItemsSource="{Binding ListUser}"
@@ -30,13 +30,16 @@
 		</ListView>
 
 		<ActivityIndicator x:Name="aIndicator" Color="Gray" IsRunning="{Binding IsLoading}"
-			RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+			WidthRequest="50" HeightRequest="50"
+			IsEnabled="false"
+			RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,
                                         Property=Width,
-                                        Factor=1}"
-				RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                        Factor=0.5,
+			Constant=-25}"
+				RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
                                         Property=Height,
-                                        Factor=1}"
-			IsEnabled="false">
+                                        Factor=0.5,
+			Constant=-25}">
 		</ActivityIndicator>
 	</RelativeLayout>
 </ContentPage>
