@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XamarinChallengeApril.Views.UserDetailPage"
+             Title="UserDetailPage">
+    <Label Text="UserDetailPage"
+           VerticalOptions="Center"
+           HorizontalOptions="Center" />
+    <StackLayout >
+        <Image HeightRequest="100" WidthRequest="100" x:Name="detailImage"/>
+        <Label x:Name="detailName" />
+        <Label x:Name="detailPhone" />
+    </StackLayout>
+</ContentPage>
