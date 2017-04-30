@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+	xmlns:local="clr-namespace:clg1704;assembly=clg1704" x:Class="clg1704.MainPage"
+	Title="Users">
+	<RelativeLayout>
+		<ListView x:Name="lvMain" IsPullToRefreshEnabled="true"
+			ItemSelected="OnItemSelected" ItemAppearing="OnItemAppearing"
+			Refreshing="OnRefreshing" ItemsSource="{Binding ListUser}"
+			IsRefreshing="{Binding IsRefreshing}"
+			RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,
+                                        Property=Width,
+                                        Factor=1}"
+				RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,
+                                        Property=Height,
+                                        Factor=1}">
+			<ListView.ItemTemplate>
+		      <DataTemplate>
+					<ViewCell>
+						<StackLayout Orientation="Horizontal" Margin="10,0,10,0" >
+	                        <Image Source="{Binding PictureThumbnail}"
+							Margin="10,0,10,0"/>
+							<StackLayout Orientation="Vertical" Spacing="0" VerticalOptions="Center">
+								<Label Text="{Binding NameFirst}" FontSize="Medium" TextColor="Gray" />
+								<Label Text="{Binding Cell}" FontSize="Micro" TextColor="{Binding CellTextColor}"/>
+							</StackLayout>
+						</StackLayout>
+                    </ViewCell>
+		      </DataTemplate>
+		    </ListView.ItemTemplate>
+		</ListView>
+
+		<ActivityIndicator x:Name="aIndicator" Color="Gray" IsRunning="{Binding IsLoading}"
+			WidthRequest="50" HeightRequest="50"
+			IsEnabled="false"
+			RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent,
+                                        Property=Width,
+                                        Factor=0.5,
+			Constant=-25}"
+				RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
+                                        Property=Height,
+                                        Factor=0.5,
+			Constant=-25}">
+		</ActivityIndicator>
+	</RelativeLayout>
+</ContentPage>
