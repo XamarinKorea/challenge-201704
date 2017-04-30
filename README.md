@@ -1,6 +1,28 @@
 # 2017년 4월의 도전과제
 [도전과제란?](https://github.com/XamarinKorea/challenge-common)
 
+## 개발환경
+- Visual Studio 2017 Community
+- Prism.Forms , Prism.Unity.Forms (https://github.com/PrismLibrary/Prism)
+- Xamarin.Forms.Maps (https://developer.xamarin.com/guides/xamarin-forms/user-interface/map/)
+  -> Andorid, UWP 에서 Maps 사용시 별도의 API 키값이 필요   
+- Xamarin.FFImageLoading.Forms(https://github.com/luberda-molinet/FFImageLoading)
+- Xamarin.Plugins : Plugin.Messaging (https://github.com/cjlotz/Xamarin.Plugins/tree/master/Messaging)
+- UI 참조 : https://www.xamarin.com/prebuilt -> Acquaint
+
+## 결과 화면
+iOS
+<p align="center">
+<img src="https://github.com/imagef5/challenge-201704/blob/master/screenshots/iOS_ListView.png" width="320"/>
+<img src="https://github.com/imagef5/challenge-201704/blob/master/screenshots/iOS_DetailView.png" width="320"/>
+</p>
+
+Android
+<p align="center">
+<img src="https://github.com/imagef5/challenge-201704/blob/master/screenshots/android_ListView.png" width="320"/>
+<img src="https://github.com/imagef5/challenge-201704/blob/master/screenshots/android_DetailView.png" width="320"/>
+</p>
+
 ## 목표
 - RESTful Web Service 에서 데이터를 읽어와서 화면에 표시하기
 

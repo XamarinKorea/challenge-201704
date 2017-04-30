@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:selector="clr-namespace:Challenge201704.XamarinKorea.Selectors"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+		     xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             xmlns:prismbehavior="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Challenge201704.XamarinKorea.Views.MainPage"
+             Title="Challenge 201704 XamarinKorea">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="male">
+                <ViewCell>
+                    <Grid Padding="8,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <ffimageloading:CachedImage Source="{Binding Picture.Medium}" VerticalOptions="Center" Aspect="AspectFill">
+                            <Image.WidthRequest>
+                                <OnPlatform x:TypeArguments="x:Double" iOS="55" Android="55" WinPhone="75"/>
+                            </Image.WidthRequest>
+                            <Image.HeightRequest>
+                                <OnPlatform x:TypeArguments="x:Double" iOS="55" Android="55" WinPhone="75"/>
+                            </Image.HeightRequest>
+                        </ffimageloading:CachedImage>
+                        <StackLayout Grid.Column="1" 
+                                               Padding="5" 
+                                               Spacing="3"
+                                               VerticalOptions="Center">
+                            <Label Text="{Binding Name, Converter={StaticResource nameConverter}}" FontSize="Medium" FontAttributes = "Bold"  LineBreakMode="TailTruncation"/>
+                            <Label Text="{Binding Email}" FontSize="Small" LineBreakMode="TailTruncation" TextColor = "Gray"/>
+                        </StackLayout>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="female">
+                <ViewCell>
+                    <Grid Padding="8,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <ffimageloading:CachedImage Source="{Binding Picture.Medium}" VerticalOptions="Center" >
+                            <ffimageloading:CachedImage.WidthRequest>
+                                <OnPlatform x:TypeArguments="x:Double" iOS="55" Android="55" WinPhone="75"/>
+                            </ffimageloading:CachedImage.WidthRequest>
+                            <ffimageloading:CachedImage.HeightRequest>
+                                <OnPlatform x:TypeArguments="x:Double" iOS="55" Android="55" WinPhone="75"/>
+                            </ffimageloading:CachedImage.HeightRequest>
+                            <ffimageloading:CachedImage.Transformations>
+                                <fftransformations:CircleTransformation />
+                            </ffimageloading:CachedImage.Transformations>
+                        </ffimageloading:CachedImage>
+                        <StackLayout Grid.Column="1" 
+                                     Padding="5" 
+                                     Spacing="3"
+                                     VerticalOptions="Center">
+                            <Label Text="{Binding Name, Converter={StaticResource nameConverter}}" FontSize="Medium" FontAttributes = "Bold"  LineBreakMode="TailTruncation"/>
+                            <Label Text="{Binding Email}" FontSize="Small" LineBreakMode="TailTruncation" TextColor = "Gray"/>
+                        </StackLayout>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            <selector:GenderDataTemplateSelector x:Key="genderDataTemplateSelector"
+                    Male="{StaticResource male}"
+                    Female="{StaticResource female}" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <StackLayout>
+            <ListView x:Name="userListView"
+                      ItemsSource="{Binding Users}"
+                      IsPullToRefreshEnabled="True"
+                      RefreshCommand="{Binding RefleshCommand}"
+                      IsRefreshing="{Binding IsRefreshing,Mode=OneWay}"
+                      HasUnevenRows="True"
+                      CachingStrategy="RecycleElement"
+                      BackgroundColor="White"
+                      ItemTemplate="{StaticResource genderDataTemplateSelector}">
+                <ListView.Behaviors>
+                    <prismbehavior:EventToCommandBehavior EventName="ItemAppearing" 
+                                                    Command="{Binding DataLoadCommand}" 
+                                                    EventArgsParameterPath="Item"/>
+                    <prismbehavior:EventToCommandBehavior EventName="ItemTapped" 
+                                                    Command="{Binding UserSelectedCommand}" 
+                                                    EventArgsParameterPath="Item" />
+                </ListView.Behaviors>
+            </ListView>
+        </StackLayout>
+        <ActivityIndicator 
+                IsRunning="{Binding IsBusy}"   
+                IsVisible="{Binding IsBusy}"
+                Color="Gray"
+                VerticalOptions="Center"
+                HorizontalOptions="Center">
+            <ActivityIndicator.WidthRequest>
+                <OnPlatform 
+                        x:TypeArguments="x:Double" 
+                        iOS="200" 
+                        Android="200"
+                        WinPhone="400" />
+            </ActivityIndicator.WidthRequest>
+        </ActivityIndicator>
+    </Grid>
+</ContentPage>
