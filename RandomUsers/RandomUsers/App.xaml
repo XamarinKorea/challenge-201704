@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:RandomUsers"
+             xmlns:circleImg="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
+             xmlns:cvt="clr-namespace:RandomUsers.Controls.Converters"
+             x:Class="RandomUsers.App">
+	<Application.Resources>
+		<!-- Application resource dictionary -->
+        <ResourceDictionary>
+            <local:ViewModelLocator x:Key="Locator" />
+            <Color x:Key="AccentColor">#099DFF</Color>
+            <Color x:Key="MaleColor">#3FB8AF</Color>
+            <Color x:Key="FemaleColor">#FF3D7F</Color>
+            <cvt:GenderToColorConverter x:Key="GenderToColorConverter" MaleColor="{StaticResource MaleColor}" FemaleColor="{StaticResource FemaleColor}" />
+
+            <DataTemplate x:Key="MaleTemplate">
+                <ViewCell>
+                    <StackLayout Orientation="Horizontal">
+                        <circleImg:CircleImage Source="{Binding Picture.ThumbnailSource}" WidthRequest="40" HeightRequest="40" Aspect="AspectFill"
+                                               BorderThickness="2" BorderColor="{StaticResource MaleColor}" FillColor="{StaticResource MaleColor}" />
+                        <Label Text="{Binding DisplayName}" VerticalOptions="Center" />
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="FemaleTemplate">
+                <ViewCell>
+                    <StackLayout Orientation="Horizontal">
+                        <circleImg:CircleImage Source="{Binding Picture.ThumbnailSource}" WidthRequest="40" HeightRequest="40" Aspect="AspectFill" 
+                                               BorderThickness="2" BorderColor="{StaticResource FemaleColor}" FillColor="{StaticResource FemaleColor}"/>
+                        <Label Text="{Binding DisplayName}" VerticalOptions="Center" />
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+            <local:UserDataTemplateSelector x:Key="UserTemplateSelector" 
+                    MaleTemplate="{StaticResource MaleTemplate}" FemaleTemplate="{StaticResource FemaleTemplate}" />
+        </ResourceDictionary>
+    </Application.Resources>
+    <Application.MainPage>
+        <NavigationPage />
+    </Application.MainPage>
+</Application>

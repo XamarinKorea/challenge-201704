@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:RandomUsers"
+             xmlns:lib ="clr-namespace:RandomUsers.Lib"
+             xmlns:controls="clr-namespace:RandomUsers.Controls"
+             Title="Random Users"
+             BindingContext="{Binding Main,Source={StaticResource Locator}}"
+             x:Class="RandomUsers.MainPage">
+    <StackLayout>
+        <controls:InfiniteListView x:Name="UsersList" ItemsSource="{Binding Users}" IsPullToRefreshEnabled="True" 
+                  RefreshCommand="{Binding RefreshCommand}" LoadMoreCommand="{Binding MoreCommand}" IsRefreshing="{Binding IsRefresh}"
+                  ItemTemplate="{StaticResource UserTemplateSelector}">
+            <ListView.Behaviors>
+                <lib:EventToCommandBehavior EventName="ItemTapped" Command="{Binding TappedCommand}" />
+            </ListView.Behaviors>
+        </controls:InfiniteListView>
+    </StackLayout>
+</ContentPage>
