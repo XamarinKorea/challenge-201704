@@ -22,7 +22,7 @@ namespace RandomUsers.Lib
 
         private Delegate _handler;
         private EventInfo _eventInfo;
-
+        // 마스터
         public string EventName
         {
             get { return (string)GetValue(EventNameProperty); }
